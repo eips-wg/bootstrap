@@ -1,0 +1,216 @@
+#!/bin/bash
+set -euf -o pipefail -x
+
+# SOURCE_URL="https://github.com/ethereum/"
+SOURCE_URL="/home/sam/Code/"
+UTILS_URL="/home/sam/Code/eips-wg/"
+DESTINATION_URL="git@github.com:eips-wg/"
+
+# List of Meta EIPs that should stay Meta. Others are moved into Core.
+declare -a META_PRESERVE=( 4 5069 5757 7199 7329 867 )
+
+# Creates all the working group repositories.
+function main() {
+    registry_begin
+
+    working_group "eips"    "eips-wg-eips"    "EIPs" "EIPS" "Meta"
+    working_group "ercs"    "eips-wg-erc"     "ERCs" "ERCS" "Standards Track" "ERC"
+    working_group "core"    "eips-wg-core"    "EIPs" "EIPS" "Standards Track" "(Core|Networking)"
+    working_group "wallets" "eips-wg-wallet"  "EIPs" "EIPS" "Standards Track" "Interface"
+
+    registry_end
+}
+
+function registry_begin() {
+    local repository="${SOURCE_URL}registry";
+
+    rm -rf "registry";
+    git clone "$repository" "registry";
+
+    echo "number,repository" > "registry/numbers.csv";
+    echo -n > "registry/repositories.toml";
+}
+
+function registry_end() {
+    local repository="${DESTINATION_URL}registry";
+
+    {
+        head -n1 "registry/numbers.csv";
+        tail -n+2 "registry/numbers.csv" | sort -n -t,;
+    } > registry/numbers2.csv;
+
+    mv -f registry/numbers2.csv registry/numbers.csv;
+
+    git -C "registry" add numbers.csv
+    git -C "registry" add repositories.toml
+    git -C "registry" commit --no-gpg-sign -m "bootstrap registry"
+
+    git -C "registry" push -f "$repository" HEAD:master
+}
+
+function working_group() {
+    local slug="$1";
+    local name="$2";
+    local repository="$SOURCE_URL$3";
+    local directory="$4";
+    local type="^type: $5\$";
+
+    if [ -z ${6+x} ]; then
+        local category=".";
+    else
+        local category="^category: $6\$";
+    fi
+
+    cat >> "registry/repositories.toml" << EOF
+[${slug}]
+rendered = "https://${slug}.eips.fyi/{number}/"
+path = "content/{number:0>5}.md"
+git = "https://github.com/eips-wg/${name}.git"
+
+EOF
+
+    rm -rf "$name";
+    git init "$name";
+    git -C "$name" pull "$repository" "master";
+
+    fix_core;
+
+    mkdir "$name/content";
+
+    local git_relative;
+    local assets;
+    local new_name;
+    local number;
+    local assets_pattern;
+    local eip_pattern='(\./)?[a-zA-Z]+-([0-9]+)\.md';
+    local license_pattern='\.\./LICENSE\.md';
+
+    while IFS= read -r -d $'\0' file; do
+        number="$(file2number "$file")";
+        git_relative="${file##"$name/"}";
+        assets="$(basename "$file")";
+        assets="$name/assets/${assets%%.md}";
+        new_name="$(printf %05d "$number")";
+
+        assets_pattern='\.\./assets/[^0-9]+-'"$number/";
+
+        if preamble "$file" | grep -q -E "$type"; then
+            if preamble "$file" | grep -q -E "$category"; then
+                # Add number to the registry.
+                echo "${number},${slug}" >> "registry/numbers.csv";
+
+                # Fix asset links.
+                if grep -q -E "$assets_pattern" "$file"; then
+                    sed -i -E "s#$assets_pattern#./assets/#g" "$file";
+                fi
+
+                # Fix eip links.
+                if grep -q -E "$eip_pattern" "$file"; then
+                    sed -i -E "s#$eip_pattern#https://eips.fyi/\2#g" "$file";
+                fi
+
+                # Fix license link.
+                sed -i -E "s#$license_pattern#/LICENSE.md#g" "$file";
+                git -C "$name" add "$git_relative";
+
+                # Move matching EIPs to the content dir.
+                if [ -d "$assets" ]; then
+                    mkdir -p "$name/content/${new_name}"
+
+                    git -C "$name" mv "$git_relative" "content/${new_name}/index.md";
+
+                    git -C "$name" mv "${assets##"$name/"}" "content/${new_name}/assets";
+                else
+                    git -C "$name" mv "$git_relative" "content/${new_name}.md";
+                fi
+                continue;
+            fi
+        fi
+
+        # Remove non-matching EIPs and their assets.
+        git -C "$name" rm -f "$git_relative";
+        if [ -d "$assets" ]; then
+            git -C "$name" rm -r "${assets##"$name/"}";
+        fi
+    done < <(find_markdown "$name/$directory/")
+
+    rm -d "$name/$directory" || true;
+    test '!' -e "$name/$directory"; # Ensures we didn't miss anything.
+
+    git -C "$name" commit --no-gpg-sign -m "Move and filter proposals";
+
+    # Remove everything that isn't git, an EIP or its assets.
+    while IFS= read -r -d $'\0' file; do
+        git -C "$name" rm -r "$file";
+    done < <(cd "$name"; find_trash)
+
+    git -C "$name" commit --no-gpg-sign -m "Clean up repository";
+
+    git -C "$name" fetch "${UTILS_URL}template" master:template/master
+    git -C "$name" merge --allow-unrelated-histories --no-ff --no-edit --no-gpg-sign template/master
+    git -C "$name" branch -D template/master
+    git -C "$name" push -f "$DESTINATION_URL$name.git" HEAD:master
+}
+
+function find_trash() {
+    # Prints a nul separated sequence of files to remove from the repository.
+    find \
+        . \
+        -mindepth 1 \
+        -maxdepth 1 \
+        '!' -name content \
+        -a \
+        '!' -name .git \
+        -print0
+}
+
+function find_markdown() {
+    # Prints a nul separated sequence of markdown file names.
+    find "$1" -type f -name '*.md' -print0
+}
+
+function preamble() {
+    # Extracts the preamble text from the given file.
+    sed '1d;/^---$/q' "$1"
+}
+
+function file2number() {
+    echo "$1" | grep -o -P '(?<=-)[0-9]+(?=\.md$)';
+}
+
+function fix_core() {
+    # Transforms all `type: Meta` proposals into `type: Standards Track`, except
+    # for those in META_PRESERVE.
+
+    local eip_number;
+    local -A preserve;
+
+    for num in "${META_PRESERVE[@]}"; do
+        preserve[$num]=1;
+    done
+
+    while IFS= read -r -d $'\0' file; do
+        eip_number="$(file2number "$file")";
+
+        if [ -n "${preserve[$eip_number]+x}" ]; then
+            continue;
+        fi
+
+        if ! preamble "$file" | grep -q "^type: Meta"; then
+            continue;
+        fi
+
+        sed --in-place -E 's/^type: Meta$/type: Standards Track\ncategory: Core/' "$file";
+        git -C "$name" add "${file##"$name/"}";
+
+    done < <(find_markdown "$name/$directory/")
+}
+
+function run() {
+    local root_dir;
+    root_dir="$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)";
+
+    (cd "$root_dir"; main "$@")
+}
+
+run "$@"
