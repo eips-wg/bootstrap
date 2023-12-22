@@ -21,6 +21,12 @@ function main() {
     registry_end
 }
 
+if [ "${1-}" = "--act" ]; then
+    safe_git="git";
+else
+    safe_git="echo Pretending to run git";
+fi
+
 function registry_begin() {
     local repository="${SOURCE_URL}registry";
 
@@ -45,7 +51,7 @@ function registry_end() {
     git -C "registry" add repositories.toml
     git -C "registry" commit --no-gpg-sign -m "bootstrap registry"
 
-    git -C "registry" push -f "$repository" HEAD:master
+    $safe_git -C "registry" push -f "$repository" HEAD:master
 }
 
 function working_group() {
@@ -137,6 +143,18 @@ EOF
     rm -d "$name/$directory" || true;
     test '!' -e "$name/$directory"; # Ensures we didn't miss anything.
 
+    # Generate an initial reviewers.yml
+    mkdir -p "$name/.wg"
+
+    {
+        echo "editors:"
+        grep '^  *-' "$name/config/eip-editors.yml" | sort | uniq
+        echo "members:"
+    } > "$name/.wg/reviewers.yml";
+
+    git -C "$name" add .wg/reviewers.yml
+    git -C "$name" rm config/eip-editors.yml
+
     git -C "$name" commit --no-gpg-sign -m "Move and filter proposals";
 
     # Remove everything that isn't git, an EIP or its assets.
@@ -149,7 +167,7 @@ EOF
     git -C "$name" fetch "${UTILS_URL}template" master:template/master
     git -C "$name" merge --allow-unrelated-histories --no-ff --no-edit --no-gpg-sign template/master
     git -C "$name" branch -D template/master
-    git -C "$name" push -f "$DESTINATION_URL$name.git" HEAD:master
+    $safe_git -C "$name" push -f "$DESTINATION_URL$name.git" HEAD:master
 }
 
 function find_trash() {
@@ -161,6 +179,8 @@ function find_trash() {
         '!' -name content \
         -a \
         '!' -name .git \
+        -a \
+        '!' -name .wg \
         -print0
 }
 
