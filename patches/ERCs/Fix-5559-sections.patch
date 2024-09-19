@@ -1,0 +1,13 @@
+diff --git a/content/05559.md b/content/05559.md
+index 942a61a9..ec4383f0 100644
+--- a/content/05559.md
++++ b/content/05559.md
+@@ -51,7 +51,7 @@ In step 2, the client builds and performs a new request based off of the type of
+ - [StorageHandledByOffChainDatabase](#data-stored-in-an-off-chain-database) 
+ 
+ In some cases, the mutation may be deferred multiple times
+-- [Storage Deferred Twice L1 > L2 > Off-Chain](#data-stored-in-an-l2--an-off-chain-database) 
++- [Storage Deferred Twice L1 > L2 > Off-Chain](#data-stored-in-an-l2-an-off-chain-database) 
+ 
+ ### Data Stored in an L1
+ ```

@@ -1,0 +1,11 @@
+diff --git a/content/05007/assets/README.md b/content/05007/assets/README.md
+index 5e4da67d..0f1d859d 100644
+--- a/content/05007/assets/README.md
++++ b/content/05007/assets/README.md
+@@ -1,5 +1,5 @@
+ # EIP-5007
+-This standard is an extension of [ERC-721](../../EIPS/eip-721.md). It proposes some additional functions (`startTime`, `endTime`) to help with on-chain time management.
++This standard is an extension of [ERC-721](../../00721.md). It proposes some additional functions (`startTime`, `endTime`) to help with on-chain time management.
+ 
+ ## Tools
+ * [Truffle](https://truffleframework.com/) - a development framework for Ethereum

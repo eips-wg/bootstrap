@@ -1,0 +1,986 @@
+diff --git a/content/01319.md b/content/01319.md
+index 336470c8..7b64b4cd 100644
+--- a/content/01319.md
++++ b/content/01319.md
+@@ -21,7 +21,7 @@ The goal is to establish a framework that allows smart contract publishers to de
+ A clear standard would help the existing EthPM Package Registry evolve from a centralized, single-project community resource into a decentralized multi-registry system whose constituents are bound together by the proposed interface. In turn, these registries could be ENS name-spaced, enabling installation conventions familiar to users of `npm` and other package managers.
+ 
+ **Examples**
+-```shell
++```bash
+ $ ethpm install packages.zeppelin.eth/Ownership
+ ```
+ 
+@@ -46,7 +46,7 @@ The specification describes a small read/write API whose components are mandator
+ 
+ **Package Names / Release Versions**
+ 
+-```shell
++```bash
+ "simple-token" # package name
+ "1.0.1"        # version string
+ ```
+@@ -73,7 +73,7 @@ tooling can easily map a string based release query to the registry's unique ide
+ Any IPFS or Swarm URI meets the definition of **manifestURI**.
+ 
+ Another example is content on GitHub addressed by its SHA-1 hash. The Base64 encoded content at this hash can be obtained by running:
+-```shell
++```bash
+ $ curl https://api.github.com/repos/:owner/:repo/git/blobs/:file_sha
+ 
+ # Example
+@@ -81,7 +81,7 @@ $ curl https://api.github.com/repos/rstallman/hello/git/blobs/ce013625030ba8dba9
+ ```
+ 
+ The string "hello" can have its GitHub SHA-1 hash independently verified by comparing it to the output of:
+-```shell
++```bash
+ $ printf "blob 6\000hello\n" | sha1sum
+ > ce013625030ba8dba906f756967f9e9ca394464a
+ ```
+diff --git a/content/02333.md b/content/02333.md
+index 31d79e00..392e413b 100644
+--- a/content/02333.md
++++ b/content/02333.md
+@@ -51,7 +51,7 @@ Keys are defined in terms of a tree structure where a key is determined by the t
+ 
+ The key tree is defined purely through the relationship between a child-node and its ancestors. Starting with the root of the tree, the *master key*, a child node can be derived by knowing the parent's private key and the index of the child. The tree is broken up into depths which are indicated by `/` and the master node is described as `m`. The first child of the master node is therefore described as `m / 0` and `m / 0`'s siblings are `m / i` for all `0 <= i < 2**32`.
+ 
+-```text
++```
+       [m / 0] - [m / 0 / 0]
+      /        \
+     /           [m / 0 / 1]
+@@ -114,7 +114,7 @@ Every key generated via the key derivation process derives a child key via a set
+ 
+ ##### Procedure
+ 
+-```text
++```
+ 0. salt = I2OSP(index, 4)
+ 1. IKM = I2OSP(parent_SK, 32)
+ 2. lamport_0 = IKM_to_lamport_SK(IKM, salt)
+@@ -156,7 +156,7 @@ Every key generated via the key derivation process derives a child key via a set
+ 
+ ##### Procedure
+ 
+-```text
++```
+ 1. salt = "BLS-SIG-KEYGEN-SALT-"
+ 2. SK = 0
+ 3. while SK == 0:
+@@ -182,7 +182,7 @@ The child key derivation function takes in the parent's private key and the inde
+ 
+ ##### Procedure
+ 
+-```text
++```
+ 0. compressed_lamport_PK = parent_SK_to_lamport_PK(parent_SK, index)
+ 1. SK = HKDF_mod_r(compressed_lamport_PK)
+ 2. return SK
+@@ -202,7 +202,7 @@ The child key derivation function takes in the parent's private key and the inde
+ 
+ ##### Procedure
+ 
+-```text
++```
+ 0. SK = HKDF_mod_r(seed)
+ 1. return SK
+ ```
+@@ -239,7 +239,7 @@ There are no major backwards compatibility issues brought upon by this EIP as it
+ 
+ ### Test Case 0
+ 
+-```text
++```
+ seed = 0xc55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04
+ master_SK = 6083874454709270928345386274498605044986640685124978867557563392430687146096
+ child_index = 0
+@@ -255,14 +255,14 @@ passphrase = "TREZOR"
+ 
+ This test case can be extended to test the entire `mnemonic-to -child_SK` stack, assuming [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) is used as the mnemonic generation mechanism. Using the following parameters, the above seed can be calculated:
+ 
+-```text
++```
+ mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+ passphrase = "TREZOR"
+ ```
+ 
+ ### Test Case 1
+ 
+-```text
++```
+ seed = 0x3141592653589793238462643383279502884197169399375105820974944592
+ master_SK = 29757020647961307431480504535336562678282505419141012933316116377660817309383
+ child_index = 3141592653
+@@ -271,7 +271,7 @@ child_SK = 254572016888506919477276293851917045167447961149258979626762482509293
+ 
+ ### Test Case 2
+ 
+-```text
++```
+ seed = 0x0099FF991111002299DD7744EE3355BBDD8844115566CC55663355668888CC00
+ master_SK = 27580842291869792442942448775674722299803720648445448686099262467207037398656
+ child_index = 4294967295
+@@ -280,7 +280,7 @@ child_SK = 293586107944594288604022343418742812408037862940620358740212527348175
+ 
+ ### Test Case 3
+ 
+-```text
++```
+ seed = 0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3
+ master_SK = 19022158461524446591288038168518313374041767046816487870552872741050760015818
+ child_index = 42
+@@ -289,7 +289,7 @@ child_SK = 313722316504790702797742970618235721664965648384727874882497755727890
+ 
+ ### Test Vector with Intermediate values
+ 
+-```text
++```
+ seed = 0xc55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04
+ master_SK = 6083874454709270928345386274498605044986640685124978867557563392430687146096
+ child_index = 0
+diff --git a/content/02334.md b/content/02334.md
+index 6eadb7c6..0cd68251 100644
+--- a/content/02334.md
++++ b/content/02334.md
+@@ -34,7 +34,7 @@ The path structure specified in this EIP aims to be more general than [BIP44](ht
+ 
+ The path traversed through the tree of keys is defined by integers (which indicate the sibling index) separated by `/` which denote ancestor relations. There are 4 levels (plus the master node) in the path and at least 4 (5 including the master node) MUST be used.
+ 
+-```text
++```
+ m / purpose / coin_type /  account / use
+ ```
+ 
+diff --git a/content/02335.md b/content/02335.md
+index 340924cf..3053f441 100644
+--- a/content/02335.md
++++ b/content/02335.md
+@@ -80,7 +80,7 @@ The password verification step verifies that the password is correct with respec
+ 
+ #### Procedure
+ 
+-```text
++```
+ 0. DK_slice = decryption_key[16:32]
+ 1. pre_image = DK_slice | cipher_message
+ 2. checksum = SHA256(pre_image)
+diff --git a/content/04400/assets/README.md b/content/04400/assets/README.md
+index d62d9ea2..8818725f 100644
+--- a/content/04400/assets/README.md
++++ b/content/04400/assets/README.md
+@@ -11,19 +11,19 @@ This project provides a reference implementation of the proposed `ERC721Consumer
+ ## Install
+ 
+ In order to install the required dependencies you need to execute:
+-```shell
++```bash
+ npm install
+ ```
+ 
+ ## Compile
+ 
+ In order to compile the solidity contracts you need to execute:
+-```shell
++```bash
+ npx hardhat compile
+ ```
+ 
+ ## Tests
+ 
+-```shell
++```bash
+ npx hardhat test
+ ```
+\ No newline at end of file
+diff --git a/content/05007/index.md b/content/05007/index.md
+index 4b275d31..33712e46 100644
+--- a/content/05007/index.md
++++ b/content/05007/index.md
+@@ -129,7 +129,7 @@ Test cases are included in [test.js](./assets/test/test.js).
+ 
+ Run in terminal:
+ 
+-```shell
++```bash
+ cd ../assets/eip-5007
+ npm install truffle -g
+ npm install
+diff --git a/content/05023.md b/content/05023.md
+index dec54fd5..2b68946c 100644
+--- a/content/05023.md
++++ b/content/05023.md
+@@ -59,7 +59,7 @@ Imagine that Bob works together with Alice on a project. Bob earns an unique NFT
+ 
+ Over time, a tree-like structures can be formed from the Share event information. If Bob shared to Alice, and Alice shared further to Charlie and Alice also shared to David a rudimentary tree structure forms out from sharing activity. This share event data can be later on utilized to gain more information of share activities that the tokens represent.
+ 
+-```text
++```
+ B -> A -> C 
+       \
+        >  D
+@@ -67,7 +67,7 @@ B -> A -> C
+ 
+ These tree structures can be further aggregated and collapsed to network representations e.g. social graphs on basis of whom has shared to whom over a span of time. E.g. if Bob shared a token to Alice, and Alice has shared a different token to Charlie and Bob has shared a token to Charlie, connections form between all these parties through sharing activities.
+ 
+-```text
++```
+  B----A----C         
+   \_______/
+ ```
+diff --git a/content/05252/assets/README.md b/content/05252/assets/README.md
+index 5136b9b0..83e84f2c 100644
+--- a/content/05252/assets/README.md
++++ b/content/05252/assets/README.md
+@@ -4,7 +4,7 @@ This project is a reference implementation of EIP-5252.
+ 
+ Try running some of the following tasks:
+ 
+-```shell
++```bash
+ npx hardhat help
+ npx hardhat test
+ GAS_REPORT=true npx hardhat test
+diff --git a/content/05437.md b/content/05437.md
+index 6cd4c9d2..ffa9577f 100644
+--- a/content/05437.md
++++ b/content/05437.md
+@@ -69,7 +69,7 @@ in the table above.
+ 
+ The following is an example of a `publicKey` using `RSA/3072` generated via GnuPG in an RFC 20 ASCII-encoding of the public key string:
+ 
+-```text
++```
+ -----BEGIN PGP PUBLIC KEY BLOCK-----
+ 
+ mQGNBGLzM2YBDADnCxAW/A0idvKNeQ6s/iYUeIIE+2mWmHcBGqLi0zrfz7pKWI+D
+diff --git a/content/05496/index.md b/content/05496/index.md
+index 2d531f5d..804b89e4 100644
+--- a/content/05496/index.md
++++ b/content/05496/index.md
+@@ -138,7 +138,7 @@ Test cases are implemented with the reference implementation.
+ 
+ Run in terminal:
+ 
+-```shell
++```bash
+ truffle test ./test/test.js
+ ```
+ 
+@@ -146,7 +146,7 @@ truffle test ./test/test.js
+ 
+ Run in terminal:
+ 
+-```shell
++```bash
+ truffle test ./test/testCloneable.js
+ ```
+ 
+diff --git a/content/05559.md b/content/05559.md
+index ec4383f0..af3fa622 100644
+--- a/content/05559.md
++++ b/content/05559.md
+@@ -117,7 +117,7 @@ function setAddr(bytes32 node, address a) external {
+ 
+ For example, if a contract returns the following data in an `StorageHandledByL2`:
+ 
+-```text
++```
+ chainId = 10
+ contractAddress = 0x0000111122223333444455556666777788889999aaaabbbbccccddddeeeeffff
+ ```
+@@ -256,7 +256,7 @@ function setAddr(bytes32 node, address a) external {
+ 
+ For example, if a contract reverts with the following:
+ 
+-```text
++```
+ StorageHandledByOffChainDatabase(
+     (
+         "CoinbaseResolver", 
+@@ -295,7 +295,7 @@ Note that the message could be altered could be altered in any way, shape, or fo
+ 
+ ### Data Stored in an L2 & an Off-Chain Database
+ 
+-```text
++```
+ ┌──────┐                                           ┌───────────┐  ┌─────────────┐  ┌────────────────────┐
+ │Client│                                           │L1 Contract│  │ L2 Contract │  │ Off-Chain Database │
+ └──┬───┘                                           └─────┬─────┘  └──────┬──────┘  └──────────┬─────────┘
+diff --git a/content/05573.md b/content/05573.md
+index 4a9892cf..8edae2f6 100644
+--- a/content/05573.md
++++ b/content/05573.md
+@@ -64,7 +64,7 @@ The following SIWE message fields are used to further define (or limit) the scop
+ 
+ The following is a non-normative example of a SIWE message with the SIWE ReCap Extension:
+ 
+-```text
++```
+ example.com wants you to sign in with your Ethereum account:
+ 0x0000000000000000000000000000000000000000
+ 
+@@ -89,7 +89,7 @@ A ReCap URI starts with `urn:recap:` followed by the unpadded base64url-encoded
+ 
+ The following is a non-normative example of a ReCap Capability:
+ 
+-```text
++```
+ urn:recap:eyJhdHQiOnsiaHR0cHM6Ly9leGFtcGxlLmNvbS9waWN0dXJlcy8iOnsiY3J1ZC9kZWxldGUiOlt7fV0sImNydWQvdXBkYXRlIjpbe31dLCJvdGhlci9hY3Rpb24iOlt7fV19LCJtYWlsdG86dXNlcm5hbWVAZXhhbXBsZS5jb20iOnsibXNnL3JlY2VpdmUiOlt7Im1heF9jb3VudCI6NSwidGVtcGxhdGVzIjpbIm5ld3NsZXR0ZXIiLCJtYXJrZXRpbmciXX1dLCJtc2cvc2VuZCI6W3sidG8iOiJzb21lb25lQGVtYWlsLmNvbSJ9LHsidG8iOiJqb2VAZW1haWwuY29tIn1dfX0sInByZiI6WyJ6ZGo3V2o2Rk5TNHJVVWJzaUp2amp4Y3NOcVpkRENTaVlSOHNLUVhmb1BmcFNadUF3Il19
+ ```
+ 
+@@ -181,13 +181,13 @@ It is expected that RS implementers define which resources they want to expose t
+ 
+ This example is expected to transform into the following `recap-transformed-statement` (for `URI` of `https://example.com`):
+ 
+-```text
++```
+ I further authorize the stated URI to perform the following actions on my behalf: (1) 'crud': 'delete', 'update' for 'https://example.com/pictures/'. (2) 'other': 'action' for 'https://example.com/pictures/'. (3) 'msg': 'receive', 'send' for 'mailto:username@example.com'.
+ ```
+ 
+ This example is also expected to transform into the following `recap-uri`:
+ 
+-```text
++```
+ urn:recap:eyJhdHQiOnsiaHR0cHM6Ly9leGFtcGxlLmNvbS9waWN0dXJlcy8iOnsiY3J1ZC9kZWxldGUiOlt7fV0sImNydWQvdXBkYXRlIjpbe31dLCJvdGhlci9hY3Rpb24iOlt7fV19LCJtYWlsdG86dXNlcm5hbWVAZXhhbXBsZS5jb20iOnsibXNnL3JlY2VpdmUiOlt7Im1heF9jb3VudCI6NSwidGVtcGxhdGVzIjpbIm5ld3NsZXR0ZXIiLCJtYXJrZXRpbmciXX1dLCJtc2cvc2VuZCI6W3sidG8iOiJzb21lb25lQGVtYWlsLmNvbSJ9LHsidG8iOiJqb2VAZW1haWwuY29tIn1dfX0sInByZiI6WyJ6ZGo3V2o2Rk5TNHJVVWJzaUp2amp4Y3NOcVpkRENTaVlSOHNLUVhmb1BmcFNadUF3Il19
+ ```
+ 
+@@ -243,7 +243,7 @@ combine into:
+ 
+ After applying the ReCap Translation Algorithm on a given SIWE message that MAY include a pre-defined `statement`, the `recap-transformed-statement` in a ReCap SIWE message MUST conform to the following ABNF:
+ 
+-```text
++```
+ recap-transformed-statement = statement recap-preamble 1*(" " recap-statement-entry ".")
+    ; see ERC-4361 for definition of input-statement
+ recap-preamble = "I further authorize the stated URI to perform the following actions on my behalf:"
+diff --git a/content/05633/index.md b/content/05633/index.md
+index ce68095f..6809fa22 100644
+--- a/content/05633/index.md
++++ b/content/05633/index.md
+@@ -58,7 +58,7 @@ Test cases are included in [test.js](./assets/test/test.js).
+ 
+ Run in terminal:
+ 
+-```shell
++```bash
+ cd ../assets/eip-5633
+ npm install
+ npx hardhat test
+diff --git a/content/06123/assets/README.md b/content/06123/assets/README.md
+index 4011a0d4..95bee10a 100644
+--- a/content/06123/assets/README.md
++++ b/content/06123/assets/README.md
+@@ -20,17 +20,17 @@ We provide the essential steps to compile the contracts and run the provided uni
+ ### Compile and run tests with Hardhat
+ 
+ Install dependencies:
+-```shell
++```bash
+ npm i
+ ```
+ 
+ Compile:
+-```shell
++```bash
+ npx hardhat compile
+ ```
+ 
+ Run all tests:
+-```shell
++```bash
+ npx hardhat test
+ ```
+ 
+diff --git a/content/06239.md b/content/06239.md
+index bb8f10d1..32ad219f 100644
+--- a/content/06239.md
++++ b/content/06239.md
+@@ -57,7 +57,7 @@ RDF statements come in various formats, we have selected the six most commonly u
+ 
+ The complete format of an RDF statement:
+ 
+-```text
++```
+ rdfStatements = {[format]}<statements>
+ ```
+ 
+@@ -75,7 +75,7 @@ When no format is selected: statements = [ttl]statements
+ 
+ The basic structure is:
+ 
+-```text
++```
+ subject predicate object .
+ ```
+ 
+@@ -83,7 +83,7 @@ In this format, the subject is in the format of IRIREF or BLANK_NODE_LABEL, the
+ 
+ For example:
+ 
+-```text
++```
+ <http://example.org/entity/user1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org/entity/User> .
+ <http://example.org/entity/user1> <http://example.org/property/name> "Alice" .
+ ```
+@@ -95,7 +95,7 @@ Compared to `nt`, `ttl` uses prefixes to simplify the IRIREF format, and the sam
+ 
+ For example:
+ 
+-```text
++```
+ @prefix : <http://example.org/entity/> .
+ @prefix p: <http://example.org/property/> .
+ 
+@@ -140,7 +140,7 @@ For example:
+ `rj` describes RDF in JSON format. A triple is described as:
+ 
+ 
+-```text
++```
+   {"subject":{"predicate":[object]}}
+ ```
+ 
+@@ -168,13 +168,13 @@ For example:
+ 
+ The basic structure is:
+ 
+-```text
++```
+ subject predicate object graphLabel.
+ ```
+ 
+ For example:
+ 
+-```text
++```
+ <http://example.org/entity/user1> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://example.org/entity/User> <http://example.org/graphs/example> .
+ <http://example.org/entity/user1> <http://example.org/property/name> "Alice" <http://example.org/graphs/example> .
+ ```
+@@ -186,7 +186,7 @@ For example:
+ 
+ For example:
+ 
+-```text
++```
+ @prefix : <http://example.org/entity/> .
+ @prefix p: <http://example.org/property/> .
+ 
+@@ -204,7 +204,7 @@ The format identifier starts with `[` and ends with `]` with the format in the m
+ 
+ For example, the `rdfStatements` in `nt` format should include the prefix `[nt]`.
+ 
+-```text
++```
+ [nt]subject predicate object .
+ ```
+ 
+diff --git a/content/06786/assets/README.md b/content/06786/assets/README.md
+index cc3a5481..0b32ff5f 100644
+--- a/content/06786/assets/README.md
++++ b/content/06786/assets/README.md
+@@ -9,19 +9,19 @@ This project provides a reference implementation of the proposed `ERC-6786 Royal
+ ## Install
+ 
+ In order to install the required dependencies you need to execute:
+-```shell
++```bash
+ npm install
+ ```
+ 
+ ## Compile
+ 
+ In order to compile the solidity contracts you need to execute:
+-```shell
++```bash
+ npx hardhat compile
+ ```
+ 
+ ## Tests
+ 
+-```shell
++```bash
+ npx hardhat test
+ ```
+\ No newline at end of file
+diff --git a/content/06808/assets/README.md b/content/06808/assets/README.md
+index 292095ae..cccf762b 100644
+--- a/content/06808/assets/README.md
++++ b/content/06808/assets/README.md
+@@ -4,7 +4,7 @@ This project is a reference implementation of EIP-6808.
+ 
+ Try running some of the following tasks:
+ 
+-```shell
++```bash
+ npm i
+ truffle compile
+ truffle test
+diff --git a/content/06809/assets/README.md b/content/06809/assets/README.md
+index 79d46327..5577fd97 100644
+--- a/content/06809/assets/README.md
++++ b/content/06809/assets/README.md
+@@ -4,7 +4,7 @@ This project is a reference implementation of EIP-6809.
+ 
+ Try running some of the following tasks:
+ 
+-```shell
++```bash
+ npm i
+ truffle compile
+ truffle test
+diff --git a/content/06982/assets/README.md b/content/06982/assets/README.md
+index abec2293..0bcf04ad 100644
+--- a/content/06982/assets/README.md
++++ b/content/06982/assets/README.md
+@@ -4,7 +4,7 @@ As a reference implementation of EIP-6982 we use the Nduja Labs ERC721Lockable c
+ 
+ To run the tests, run the following commands:
+ 
+-```shell
++```bash
+ npm i -g pnpm
+ pnpm i
+ pnpm test
+diff --git a/content/07007/assets/README.md b/content/07007/assets/README.md
+index cc8e3a0f..918eff8b 100644
+--- a/content/07007/assets/README.md
++++ b/content/07007/assets/README.md
+@@ -8,7 +8,7 @@ Run `npm install` in the root directory.
+ ## Testing
+ Try running some of the following tasks:
+ 
+-```shell
++```bash
+ npx hardhat help
+ npx hardhat test
+ REPORT_GAS=true npx hardhat test
+diff --git a/content/07565.md b/content/07565.md
+index a95a39d0..f08c92b6 100644
+--- a/content/07565.md
++++ b/content/07565.md
+@@ -239,7 +239,7 @@ describe("PerpetualContractNFTDemo", function () {
+ 
+ Run in Terminal：
+ 
+-```console
++```bash
+ npx hardhat test
+ ```
+ 
+diff --git a/content/07585.md b/content/07585.md
+index e09b28ba..88bf4b3d 100644
+--- a/content/07585.md
++++ b/content/07585.md
+@@ -32,7 +32,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
+ 
+ MixHash is a Merkle tree root hash value that incorporates data length information. Its structure is as follows:
+ 
+-```text
++```
+      +-----------256 bits MixHash-----------+
+ High |-2-|----62----|----------192----------| Low
+ 
+@@ -156,7 +156,7 @@ With the introduction of the Proof of Work (PoW) concept, the strategy for submi
+ 
+ Integrating a PoW mechanism into the design of public data storage proofs is not complex. A simple implementation could modify the second step to:
+ 
+-```text
++```
+ 2. To generate a correct storage proof, the Supplier needs to traverse all 1KB chunks of D to find the optimal leaf node `m`. The method involves attempting to append the nonce and a self-constructed noise value to the end of each chunk to minimize the new Merkle tree root hash and, according to PoW difficulty requirements, ensuring that the last x bits of the constructed `proof_result_m` are zero. After determining `m` and the noise, the path `m_path` and the leaf node value `m_leaf_data` of `m` are extracted.
+ ```
+ 
+diff --git a/content/07700/index.md b/content/07700/index.md
+index 6cc12b77..4f4e7e9a 100644
+--- a/content/07700/index.md
++++ b/content/07700/index.md
+@@ -230,7 +230,7 @@ let iterations = 500000; // 500,000 iterations
+ ##### 3. `sigKeygen`
+ The data signer must be derived from the owner or manager keys of a node. Message payload for the required `sigKeygen` must then be formatted as:
+ 
+-```text
++```
+ Requesting Signature To Generate Keypair(s)\n\nOrigin: ${username}\nProtocol: ${protocol}\nExtradata: ${extradata}
+ ```
+ 
+@@ -263,7 +263,7 @@ Since the derived signer is wallet-specific, it can
+ 
+ simultaneously in the background without ever prompting the user. Signature(s) `dataSig` accompanying the off-chain calldata must implement the following format in their message payloads:  
+ 
+-```text
++```
+ Requesting Signature To Update Off-Chain Data\n\nOrigin: ${username}\nData Type: ${dataType}\nData Value: ${dataValue}
+ ```
+ 
+@@ -277,7 +277,7 @@ The `dataSigner` is not stored on L1, and the clients must instead
+ 
+ CCIP-Read-enabled contracts can then verify during resolution time that the `approval` attached with the signed calldata comes from the node's manager or owner, and that it approves the expected `dataSigner`. The `approval` signature must have the following message payload format:
+ 
+-```text
++```
+ Requesting Signature To Approve Data Signer\n\nOrigin: ${username}\nApproved Signer: ${dataSigner}\nApproved By: ${caip10}
+ ```
+ 
+diff --git a/content/02333.md b/content/02333.md
+index 392e413b..6144ea17 100644
+--- a/content/02333.md
++++ b/content/02333.md
+@@ -248,7 +248,7 @@ child_SK = 203977898597366509423174122624725581078753921724440767926710919752109
+ 
+ This test case can be extended to test the entire mnemonic-to-`child_SK` stack, assuming [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) is used as the mnemonic generation mechanism. Using the following parameters, the above seed can be calculated:
+ 
+-```test
++```
+ mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+ passphrase = "TREZOR"
+ ```
+diff --git a/content/03772.md b/content/03772.md
+index 97d6a586..456136ed 100644
+--- a/content/03772.md
++++ b/content/03772.md
+@@ -147,7 +147,7 @@ There are no known backward-incompatible issues.
+ 
+ On the implementation level `uint64` may be used directly, or with custom types introduced in 0.8.9.
+ 
+-```soldity
++```solidity
+ function compress(uint256 full) public pure returns (uint64 cint) {
+     uint8 bits = mostSignificantBitPosition(full);
+     if (bits <= 55) {
+diff --git a/content/05554.md b/content/05554.md
+index f7ac0d46..4e5d3e64 100644
+--- a/content/05554.md
++++ b/content/05554.md
+@@ -159,7 +159,7 @@ When a token holder uses an NFT for off-chain merchandise, log a reference to th
+ 
+ ### Required fields
+ 
+-```solifity
++```solidity
+ function copyrightOwner(uint256 tokenId) external returns address;
+ ```
+ 
+diff --git a/content/07518/index.md b/content/07518/index.md
+index a68e97b2..80e0c323 100644
+--- a/content/07518/index.md
++++ b/content/07518/index.md
+@@ -214,7 +214,7 @@ function removeRestriction(uint id) external returns (bool)
+ 
+ ### `safeTransferFrom`
+ 
+-```solidi
++```solidity
+ function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) override external;
+ ```
+ 
+@@ -570,4 +570,4 @@ The proposal is fully compatible with [ERC-1155](../01155.md) , and any [ERC-115
+ 
+ ## Copyright
+ 
+-Copyright and related rights waived via [CC0](/LICENSE.md).
+\ No newline at end of file
++Copyright and related rights waived via [CC0](/LICENSE.md).
+diff --git a/content/07673.md b/content/07673.md
+index 43a2ba81..dc3ec344 100644
+--- a/content/07673.md
++++ b/content/07673.md
+@@ -325,7 +325,7 @@ Using the encoding table, the base256emoji encoding can be transcoded into hexad
+ 
+ ## Reference Implementation
+ 
+-```python3
++```python
+ to_emoji = [
+     '🚀', '🪐', '☄', '🛰', '🌌', '🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘', '🌍', '🌏', '🌎',
+     '🐉', '☀', '💻', '🖥', '💾', '💿', '😂', '❤', '😍', '🤣', '😊', '🙏', '💕', '😭', '😘', '👍',
+diff --git a/content/02333.md b/content/02333.md
+index 6144ea17..9c649662 100644
+--- a/content/02333.md
++++ b/content/02333.md
+@@ -87,7 +87,7 @@ Every key generated via the key derivation process derives a child key via a set
+ 
+ ##### Procedure
+ 
+-``` text
++```
+ 0. PRK = HKDF-Extract(salt, IKM)
+ 1. OKM = HKDF-Expand(PRK, "" , L)
+ 2. lamport_SK = bytes_split(OKM, K)
+diff --git a/content/05094.md b/content/05094.md
+index e6fb6353..f9441dae 100644
+--- a/content/05094.md
++++ b/content/05094.md
+@@ -31,16 +31,18 @@ Introduction of this EIP is meant to bridge to a safer RPC listing system to be
+ 
+ Network Switching URLs contain "ethereum" in their schema (protocol) part and are constructed as follows:
+ 
+-    network_add             = erc831_part "add" "@" chain_id [ "/" ] "?" parameters
+-    erc831_part             = "ethereum:network-"
+-    chain_id                = 1*DIGIT
+-    parameters              = parameter *( "&" parameter )
+-    parameter               = key "=" value
+-    key                     = required_keys / optional_keys
+-    required_keys           = "rpc_url" / "chain_name"
+-    optional_keys           = "name" / "symbol" / "decimals" / "explorer_url" / "icon_url"
+-    value                   = STRING / number
+-    number                  = 1*DIGIT
++```abnf
++network_add             = erc831_part "add" "@" chain_id [ "/" ] "?" parameters
++erc831_part             = "ethereum:network-"
++chain_id                = 1*DIGIT
++parameters              = parameter *( "&" parameter )
++parameter               = key "=" value
++key                     = required_keys / optional_keys
++required_keys           = "rpc_url" / "chain_name"
++optional_keys           = "name" / "symbol" / "decimals" / "explorer_url" / "icon_url"
++value                   = STRING / number
++number                  = 1*DIGIT
++```
+ 
+ `STRING` is a URL-encoded Unicode string of arbitrary length, where delimiters and the
+ percentage symbol (`%`) are mandatorily hex-encoded with a `%` prefix.
+@@ -65,7 +67,7 @@ If the *key* in the parameter is `decimals` the *value* MUST be a `number`.
+ 
+ An example of adding a network with RPC endpoints `https://rpc-polygon.com` and `https://rpc-mainnet.matic.network`, the name `Polygon Mainnet`, token `Matic`, symbol `MATIC`, decimals `18`, explorer at `https://polygonscan.com/`, and Chain ID `137` would look as follows:
+ 
+-```URL
++```
+ ethereum:network-add@137/?chain_name=Polygon%20Mainnet&rpc_url=https%3A%2F%2Frpc-polygon.com&rpc_url=https%3A%2F%2Frpc-mainnet.matic.network&name=Matic&symbol=MATIC&decimals=18&explorer_url=https%3A%2F%2Fpolygonscan.com
+ ```
+ 
+@@ -79,7 +81,7 @@ The choice for `PREFIX` being `network` is to allow further expansion and allow
+ 
+ An example URL for adding the Optimism Network
+ 
+-```URL
++```
+ ethereum:network-add@10/?chain_name=Optimistic%20Ethereum
+ &rpc_url=https%3A%2F%2Fmainnet.optimism.io&name=Ethereum&symbol=ETH&decimals=18&explorer_url=https%3A%2F%2Foptimistic.etherscan.io
+ ```
+diff --git a/content/05267.md b/content/05267.md
+index c6e825c2..c73919db 100644
+--- a/content/05267.md
++++ b/content/05267.md
+@@ -97,7 +97,7 @@ This contract's domain only uses the fields `name`, `chainId`, and `verifyingCon
+ 
+ Assuming this contract is on Ethereum mainnet and its address is 0x0000000000000000000000000000000000000001, the domain it describes is:
+ 
+-```json5
++```json
+ {
+   name: "Example",
+   chainId: 1,
+diff --git a/content/01444.md b/content/01444.md
+index 06fd7776..13ff207d 100644
+--- a/content/01444.md
++++ b/content/01444.md
+@@ -33,7 +33,7 @@ Two types of contract: `LocalizationPreferences`, and `Localization`s.
+ 
+ The `LocalizationPreferences` contract functions as a proxy for `tx.origin`.
+ 
+-```diagram
++```
+                                                                    +--------------+
+                                                                    |              |
+                                                           +------> | Localization |
+diff --git a/content/05252/index.md b/content/05252/index.md
+index d409fd03..afa1a5b6 100644
+--- a/content/05252/index.md
++++ b/content/05252/index.md
+@@ -155,7 +155,7 @@ The weights represent relative importance on each factor. The total importance i
+ | α   | Contribution value per each **`Finance`** contract from current proposal                  |
+ | β   | Time they maintained **`Finance`** per each contract from current timestamp of a proposal |
+ 
+-```math
++```
+ (score per each ABT) = α * (contribution value) + β * (time that abt was maintained from now)
+ ```
+ 
+@@ -164,7 +164,7 @@ The weights represent relative importance on each factor. The total importance i
+ Normalization is applied for data integrity on user's contribution in a DAO.
+ Normalized score can be calculated from the state of submitting a proposal
+ 
+-```math
++```
+ (Normalized score per each ABT) = α * (contribution value)/(total contribution value at submitting tx) + β * (time that abt was maintained)/(time passed from genesis to proposal creation)
+ ```
+ 
+@@ -176,7 +176,7 @@ The multiplier is determined linearly from base factor (b) and multiplier(m).
+ 
+ The equation for influence is :
+ 
+-```math
++```
+ (influence) = m * (sum(normalized_score))
+ ```
+ 
+@@ -184,12 +184,12 @@ The equation for influence is :
+ 
+ For example, if a user has 3 **`Account-bound tokens`** with normalized score of each 1.0, 0.5, 0.3 and the locked token is 100, and multiplier is 0.5 and base factor is 1.5. Then the total influence is
+ 
+-````math
++````
+ 0.5 * {(1.0 + 0.5 + 0.3) / 3} + 1.5 = 1.8
+ 
+  The total voting power would be
+ 
+-```math
++```
+ (voting power) = 1.8 * sqrt(100)  = 18
+ ````
+ 
+diff --git a/content/07585.md b/content/07585.md
+index 88bf4b3d..9dcab8e0 100644
+--- a/content/07585.md
++++ b/content/07585.md
+@@ -142,13 +142,13 @@ As can be seen from the process described above, the core of constructing public
+ 
+ Using a strategy combining block interval limitations and priority for first-time submissions is often effective in defending against external data source attacks. The effectiveness of this approach primarily relies on the difference in speed between reading files from local storage and retrieving files from the network. We can define the success rate `R`` of defending against external data source attacks using the following formula:
+ 
+-```math
++```
+ R = (TNetwork - TLocal) / AvgProofTime
+ ```
+ 
+ The larger the AvgProofTime, the lower the success rate of defending against Sourcing Attack. Currently, the most significant factor affecting AvgProofTime is the average time for on-chain transactions. For example, in the BTC network, the time for 2 blocks is approximately 20 minutes. With such a large AvgProofTime, the success rate `R`` decreases rapidly, making sourcing attacks more likely to succeed. We can introduce a dynamically adjustable Proof of Work (PoW) mechanism to further defend against Sourcing Attack. This modification alters the formula as follows:
+ 
+-```math
++```
+ R = (TNetwork - TLocal) / (AvgProofTime-AvgPoWTime)
+ ```
+ 
+diff --git a/content/07738/index.md b/content/07738/index.md
+index 8b8a3f4c..d58a21df 100644
+--- a/content/07738/index.md
++++ b/content/07738/index.md
+@@ -63,7 +63,7 @@ Test cases are included in [NFTRegistryTest.test.ts](./assets/test/NFTRegistryTe
+ 
+ Clone the repo and run:
+ 
+-```shell
++```bash
+ cd ../assets/eip-7738
+ npm install --save-dev hardhat
+ npm install
+diff --git a/content/07715/index.md b/content/07715/index.md
+index 7aa6ec32..959d92e4 100644
+--- a/content/07715/index.md
++++ b/content/07715/index.md
+@@ -41,7 +41,7 @@ We introduce a `wallet_grantPermissions` method for the DApp to request the Wall
+ 
+ #### Permission schema
+ 
+-```tsx
++```typescript
+ type PermissionRequest = {
+   chainId: Hex; // hex-encoding of uint256
+   address?: Address;
+@@ -71,7 +71,7 @@ type PermissionRequest = {
+ 
+ An array of `PermissionRequest` objects is the final `params` field expected by the `wallet_grantPermissions` RPC.
+ 
+-```tsx
++```typescript
+ [
+     {
+         chainId: 123,
+@@ -97,7 +97,7 @@ An array of `PermissionRequest` objects is the final `params` field expected by
+ 
+ #### Response Specification
+ 
+-```tsx
++```typescript
+ type PermissionResponse = PermissionRequest & {
+   context: Hex;
+   accountMeta?: {
+@@ -127,7 +127,7 @@ If the request is malformed or the wallet is unable/unwilling to grant permissio
+ 
+ An array of `PermissionResponse` objects is the final `result` field expected by the `wallet_grantPermissions` RPC.
+ 
+-```tsx
++```typescript
+ [
+     {
+         // original request with modifications
+@@ -160,7 +160,7 @@ Permissions can be revoked by calling this method and the wallet will respond wi
+ 
+ #### Request Specification
+ 
+-```tsx
++```typescript
+ type RevokePermissionsRequestParams = {
+   permissionContext: "0x{string}";
+ };
+@@ -168,7 +168,7 @@ type RevokePermissionsRequestParams = {
+ 
+ #### Response Specification
+ 
+-```tsx
++```typescript
+ type RevokePermissionsResponseResult = {};
+ ```
+ 
+@@ -182,7 +182,7 @@ However, if two signers or two permissions share the same type name, a DApp coul
+ 
+ #### Signers
+ 
+-```tsx
++```typescript
+ // A wallet is the signer for these permissions
+ // `data` is not necessary for this signer type as the wallet is both the signer and grantor of these permissions
+ type WalletSigner = {
+@@ -226,7 +226,7 @@ type AccountSigner = {
+ 
+ #### Permissions
+ 
+-```tsx
++```typescript
+ // Native token transfer, e.g. ETH on Ethereum
+ type NativeTokenTransferPermission = {
+   type: "native-token-transfer";
+@@ -294,7 +294,7 @@ type RateLimitPermission = {
+ 
+ If the signer is specified as `wallet`, then the wallet itself manages the session. If the wallet approves the request, it MUST accept [ERC-5792](../05792.md)’s `wallet_sendCalls` with the `permissions` capability, which MAY include the session with a `permissionsContext`. For example:
+ 
+-```tsx
++```typescript
+ [
+   {
+     version: "1.0",
+@@ -347,7 +347,7 @@ If the wallet is using CAIP-25 authorization, wallet SHOULD include `permissions
+ 
+ Example:
+ 
+-```json
++```js
+ {
+   //...
+   "sessionProperties": {
+@@ -368,7 +368,7 @@ Example:
+ 
+ Example of formatting userOp signature using the [ERC-7679](../07679.md) UserOp Builder
+ 
+-```jsx
++```typescript
+ const getSignature = async ({
+   address,
+   userOp,
+@@ -391,7 +391,7 @@ const getSignature = async ({
+ 
+ When requesting permissions with a `type` of `account`, the returned data will be redeemable using the interfaces specified in ERC-7710. This allows the recipient of the permissions to use any account type (EOA or contract) to form a transaction or UserOp using whatever payment or relay infrastructure they prefer, by sending an internal message to the returned `permissions.signerMeta.delegationManager` and calling its `function redeemDelegation(bytes calldata _data, Action calldata _action) external;` function with the `_data` parameter set to the returned `permissions.permissionsContext`, and the `_action` data forming the message that the permissions recipient desires the user's account to emit, as defined by this struct:
+ 
+-```
++```solidity
+ struct Action {
+     address to;
+     uint256 value;
+@@ -401,7 +401,7 @@ struct Action {
+ 
+ A simple pseudocode example of using a permission in this way, given two ethers signers in the same context, where `alice` wants to request a permission from `bob` might be like this:
+ 
+-```
++```typescript
+ // Alice requests a permission from Bob
+ const permissionsResponse = await bob.request({
+   method: 'wallet_grantPermissions',

@@ -9,16 +9,13 @@ DESTINATION_URL="git@github.com:eips-wg/"
 # List of Meta EIPs that should stay Meta. Others are moved into Core.
 declare -a META_PRESERVE=( 4 5069 5757 7199 7329 867 )
 
+# Get path to this script (https://stackoverflow.com/a/246128)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 # Creates all the working group repositories.
 function main() {
-    registry_begin
-
-    working_group "eips"    "eips-wg-eips"    "EIPs" "EIPS" "Meta"
-    working_group "ercs"    "eips-wg-erc"     "ERCs" "ERCS" "Standards Track" "ERC"
-    working_group "core"    "eips-wg-core"    "EIPs" "EIPS" "Standards Track" "(Core|Networking)"
-    working_group "wallets" "eips-wg-wallet"  "EIPs" "EIPS" "Standards Track" "Interface"
-
-    registry_end
+    working_group "ercs"    "ERCs"     "ERCs" "ERCS" "Standards Track" "ERC"
+    working_group "eips"    "EIPs"    "EIPs" "EIPS" ".*"
 }
 
 if [ "${1-}" = "--act" ]; then
@@ -26,33 +23,6 @@ if [ "${1-}" = "--act" ]; then
 else
     safe_git="echo Pretending to run git";
 fi
-
-function registry_begin() {
-    local repository="${SOURCE_URL}registry";
-
-    rm -rf "registry";
-    git clone "$repository" "registry";
-
-    echo "number,repository" > "registry/numbers.csv";
-    echo -n > "registry/repositories.toml";
-}
-
-function registry_end() {
-    local repository="${DESTINATION_URL}registry";
-
-    {
-        head -n1 "registry/numbers.csv";
-        tail -n+2 "registry/numbers.csv" | sort -n -t,;
-    } > registry/numbers2.csv;
-
-    mv -f registry/numbers2.csv registry/numbers.csv;
-
-    git -C "registry" add numbers.csv
-    git -C "registry" add repositories.toml
-    git -C "registry" commit --no-gpg-sign -m "bootstrap registry"
-
-    $safe_git -C "registry" push -f "$repository" HEAD:master
-}
 
 function working_group() {
     local slug="$1";
@@ -67,19 +37,11 @@ function working_group() {
         local category="^category: $6\$";
     fi
 
-    cat >> "registry/repositories.toml" << EOF
-[${slug}]
-rendered = "https://${slug}.eips.fyi/{number}/"
-path = "content/{number:0>5}.md"
-git = "https://github.com/eips-wg/${name}.git"
-
-EOF
-
     rm -rf "$name";
     git init "$name";
     git -C "$name" pull "$repository" "master";
 
-    fix_core;
+    # fix_core;
 
     mkdir "$name/content";
 
@@ -89,6 +51,7 @@ EOF
     local number;
     local assets_pattern;
     local eip_pattern='(\./)?[a-zA-Z]+-([0-9]+)\.md';
+    local prefix_pattern='/([0-9]{1,4})\.md';
     local license_pattern='\.\./LICENSE\.md';
 
     while IFS= read -r -d $'\0' file; do
@@ -102,9 +65,6 @@ EOF
 
         if preamble "$file" | grep -q -E "$type"; then
             if preamble "$file" | grep -q -E "$category"; then
-                # Add number to the registry.
-                echo "${number},${slug}" >> "registry/numbers.csv";
-
                 # Fix asset links.
                 if grep -q -E "$assets_pattern" "$file"; then
                     sed -i -E "s#$assets_pattern#./assets/#g" "$file";
@@ -112,8 +72,15 @@ EOF
 
                 # Fix eip links.
                 if grep -q -E "$eip_pattern" "$file"; then
-                    sed -i -E "s#$eip_pattern#https://eips.fyi/\2#g" "$file";
+                    if [ -d "$assets" ]; then
+                        sed -i -E "s#$eip_pattern#../\2.md#g" "$file";
+                    else
+                        sed -i -E "s#$eip_pattern#./\2.md#g" "$file";
+                    fi
                 fi
+
+                # Left-pad EIP numbers with zeros.
+                sed -i -e :a -e 's#/\([0-9]\{1,4\}\)\.md#/0\1.md#;ta' "$file";
 
                 # Fix license link.
                 sed -i -E "s#$license_pattern#/LICENSE.md#g" "$file";
@@ -157,6 +124,12 @@ EOF
 
     git -C "$name" commit --no-gpg-sign -m "Move and filter proposals";
 
+    # Apply patches.
+    while IFS= read -r -d $'\0' file; do
+        git -C "$name" apply --index "$file";
+        git -C "$name" commit --no-gpg-sign -m "Apply patch: $(basename "$file")";
+    done < <(find_patches "$name")
+
     # Remove everything that isn't git, an EIP or its assets.
     while IFS= read -r -d $'\0' file; do
         git -C "$name" rm -r "$file";
@@ -181,6 +154,19 @@ function find_trash() {
         '!' -name .git \
         -a \
         '!' -name .wg \
+        -print0
+}
+
+function find_patches() {
+    local name="$1"
+
+    # Prints a nul separated sequence of patch files.
+    find \
+        "${SCRIPT_DIR}/patches/${name}" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type f \
+        -name '*.patch' \
         -print0
 }
 
