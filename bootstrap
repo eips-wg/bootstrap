@@ -154,6 +154,8 @@ function find_trash() {
         '!' -name .git \
         -a \
         '!' -name .wg \
+        -a \
+        '!' -name README.md \
         -print0
 }
 
