@@ -1,0 +1,39 @@
+diff --git a/content/02780/index.md b/content/02780/index.md
+index 8a3a34e1..7cb02a2c 100644
+--- a/content/02780/index.md
++++ b/content/02780/index.md
+@@ -218,7 +218,7 @@ Clients compute intrinsic gas as today for each typed transaction **except**:
+ 
+ ### Pseudocode (normative):
+ 
+-```text
++```
+ function CalculateIntrinsicGas(tx, state_at_start):
+     gasCost = TX_BASE_COST
+ 
+diff --git a/content/07938.md b/content/07938.md
+index 62771a7e..01adccef 100644
+--- a/content/07938.md
++++ b/content/07938.md
+@@ -28,7 +28,7 @@ Let `T = 164,250` be the number of epochs for a 10x increase.
+ 
+ The gas limit at epoch `t` is calculated as follows:
+ 
+-```text
++```
+ G(t) = {
+     current default limit, if t < t0
+     round(G0 * 10^((t-t0)/T)), if t0 ≤ t ≤ t0 + 2*T
+diff --git a/content/07951/index.md b/content/07951/index.md
+index a94548cd..92c8bbc5 100644
+--- a/content/07951/index.md
++++ b/content/07951/index.md
+@@ -114,7 +114,7 @@ The precompile MUST perform the following validation checks and return `` (failu
+ 
+ The verification algorithm follows these steps:
+ 
+-```text
++```
+ # Input validation (as specified above)
+ if input_length != 160:
+     return

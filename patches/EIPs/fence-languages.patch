@@ -152,19 +152,6 @@ index ede28310..29126db0 100644
  ingress-mac("foo") = 0c7ec6340062cc46f5e9f1e3cf86f8c8c403c5a0964f5df0ebd34a75ddc86db5
  ```
  
-diff --git a/content/00712/index.md b/content/00712/index.md
-index 6adcc754..36f5c4f8 100644
---- a/content/00712/index.md
-+++ b/content/00712/index.md
-@@ -179,7 +179,7 @@ Typed data is a JSON object containing type information, domain separator parame
- ##### Example
- 
- Request:
--```shell
-+```bash
- curl -X POST --data '{"jsonrpc":"2.0","method":"eth_signTypedData","params":["0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Person":[{"name":"name","type":"string"},{"name":"wallet","type":"address"}],"Mail":[{"name":"from","type":"Person"},{"name":"to","type":"Person"},{"name":"contents","type":"string"}]},"primaryType":"Mail","domain":{"name":"Ether Mail","version":"1","chainId":1,"verifyingContract":"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"},"message":{"from":{"name":"Cow","wallet":"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"},"to":{"name":"Bob","wallet":"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"},"contents":"Hello, Bob!"}}],"id":1}'
- ```
- 
 diff --git a/content/00868.md b/content/00868.md
 index 7941ca92..a1ffbdd5 100644
 --- a/content/00868.md
@@ -644,3 +631,77 @@ index 09f8ed23..edafe0c5 100644
  {"pc":0,"op":"0x60","gas":49979000,"gasCost":3,"memSize":0,"stack":[],"depth":1,"refund":0,"opName":"PUSH1"}
  {"pc":2,"op":"0x60","gas":49978997,"gasCost":3,"memSize":0,"stack":["0x0"],"depth":1,"refund":0,"opName":"PUSH1"}
  {"pc":4,"op":"0x60","gas":49978994,"gasCost":3,"memSize":0,"stack":["0x0","0x0"],"depth":1,"refund":0,"opName":"PUSH1"}
+diff --git a/content/07951/index.md b/content/07951/index.md
+index 92c8bbc5..06040023 100644
+--- a/content/07951/index.md
++++ b/content/07951/index.md
+@@ -39,7 +39,7 @@ We introduce `P256VERIFY` a precompile at the address `0x100` which performs ECD
+ 
+ The secp256r1 curve is fully defined by the following set of parameters:
+ 
+-``` text
++```
+ Base field modulus = p = 0xffffffff00000001000000000000000000000000ffffffffffffffffffffffff
+ Curve equation: y^2 = x^3 + ax + b (mod p)
+ Curve coefficient a = 0xffffffff00000001000000000000000000000000fffffffffffffffffffffffc
+diff --git a/content/00712/index.md b/content/00712/index.md
+index 52e7bd75..ae5862ec 100644
+--- a/content/00712/index.md
++++ b/content/00712/index.md
+@@ -179,7 +179,7 @@ Typed data is a JSON object containing type information, domain separator parame
+ 
+ Request:
+ 
+-```shell
++```bash
+ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_signTypedData","params":["0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826", {"types":{"EIP712Domain":[{"name":"name","type":"string"},{"name":"version","type":"string"},{"name":"chainId","type":"uint256"},{"name":"verifyingContract","type":"address"}],"Person":[{"name":"name","type":"string"},{"name":"wallet","type":"address"}],"Mail":[{"name":"from","type":"Person"},{"name":"to","type":"Person"},{"name":"contents","type":"string"}]},"primaryType":"Mail","domain":{"name":"Ether Mail","version":"1","chainId":1,"verifyingContract":"0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC"},"message":{"from":{"name":"Cow","wallet":"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"},"to":{"name":"Bob","wallet":"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"},"contents":"Hello, Bob!"}}],"id":1}'
+ ```
+ 
+diff --git a/content/00001/index.md b/content/00001/index.md
+index b4f1691d..31791a96 100644
+--- a/content/00001/index.md
++++ b/content/00001/index.md
+@@ -521,7 +521,7 @@ Which renders to:
+ 
+ Permitted Execution API Specification URLs must anchor to a specific commit, and so must match this regular expression:
+ 
+-```regex
++```
+ ^(https://github.com/ethereum/execution-apis/(blob|commit)/[0-9a-f]{40}/.*|https://github.com/ethereum/execution-apis/tree/[0-9a-f]{40}/.*)$
+ ```
+ 
+diff --git a/content/07904/index.md b/content/07904/index.md
+index 87827c2d..fe58e19c 100644
+--- a/content/07904/index.md
++++ b/content/07904/index.md
+@@ -233,7 +233,7 @@ Further research might be required to ensure that contracts that use hard coded
+ 
+ Code:
+ 
+-```mnemonic
++```
+ PUSH1 0x60
+ ```
+ 
+@@ -243,7 +243,7 @@ Gas cost: 1
+ 
+ Code:
+ 
+-```mnemonic
++```
+ PUSH2 0x0202
+ PUSH2 0x1000
+ EXP
+diff --git a/content/07904/index.md b/content/07904/index.md
+index fe58e19c..b2c63685 100644
+--- a/content/07904/index.md
++++ b/content/07904/index.md
+@@ -259,7 +259,7 @@ TODO: This EIP is a relatively simple change, but requires updates in many tests
+ 
+ The reference implementation in Go-Ethereum provides new instruction set and new `memoryGasCost` function. Additionally it contains a set of overrides for specific gas elements. The actual implementation requires proper versioning of the overrides.
+ 
+-```golang
++```go
+ const (
+   RepricedGasBaseStep         uint64 = 1
+   RepricedGasFastStep         uint64 = 2

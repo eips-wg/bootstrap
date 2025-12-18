@@ -111,15 +111,13 @@ function working_group() {
     test '!' -e "$name/$directory"; # Ensures we didn't miss anything.
 
     # Generate an initial reviewers.yml
-    mkdir -p "$name/.wg"
-
     {
         echo "editors:"
         grep '^  *-' "$name/config/eip-editors.yml" | sort | uniq
         echo "members:"
-    } > "$name/.wg/reviewers.yml";
+    } > "$name/reviewers.yml";
 
-    git -C "$name" add .wg/reviewers.yml
+    git -C "$name" add reviewers.yml
     git -C "$name" rm config/eip-editors.yml
 
     git -C "$name" commit --no-gpg-sign -m "Move and filter proposals";
@@ -153,7 +151,7 @@ function find_trash() {
         -a \
         '!' -name .git \
         -a \
-        '!' -name .wg \
+        '!' -name reviewers.yml \
         -a \
         '!' -name README.md \
         -print0

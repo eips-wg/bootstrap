@@ -38,108 +38,6 @@ index 336470c8..7b64b4cd 100644
  $ printf "blob 6\000hello\n" | sha1sum
  > ce013625030ba8dba906f756967f9e9ca394464a
  ```
-diff --git a/content/02333.md b/content/02333.md
-index 31d79e00..392e413b 100644
---- a/content/02333.md
-+++ b/content/02333.md
-@@ -51,7 +51,7 @@ Keys are defined in terms of a tree structure where a key is determined by the t
- 
- The key tree is defined purely through the relationship between a child-node and its ancestors. Starting with the root of the tree, the *master key*, a child node can be derived by knowing the parent's private key and the index of the child. The tree is broken up into depths which are indicated by `/` and the master node is described as `m`. The first child of the master node is therefore described as `m / 0` and `m / 0`'s siblings are `m / i` for all `0 <= i < 2**32`.
- 
--```text
-+```
-       [m / 0] - [m / 0 / 0]
-      /        \
-     /           [m / 0 / 1]
-@@ -114,7 +114,7 @@ Every key generated via the key derivation process derives a child key via a set
- 
- ##### Procedure
- 
--```text
-+```
- 0. salt = I2OSP(index, 4)
- 1. IKM = I2OSP(parent_SK, 32)
- 2. lamport_0 = IKM_to_lamport_SK(IKM, salt)
-@@ -156,7 +156,7 @@ Every key generated via the key derivation process derives a child key via a set
- 
- ##### Procedure
- 
--```text
-+```
- 1. salt = "BLS-SIG-KEYGEN-SALT-"
- 2. SK = 0
- 3. while SK == 0:
-@@ -182,7 +182,7 @@ The child key derivation function takes in the parent's private key and the inde
- 
- ##### Procedure
- 
--```text
-+```
- 0. compressed_lamport_PK = parent_SK_to_lamport_PK(parent_SK, index)
- 1. SK = HKDF_mod_r(compressed_lamport_PK)
- 2. return SK
-@@ -202,7 +202,7 @@ The child key derivation function takes in the parent's private key and the inde
- 
- ##### Procedure
- 
--```text
-+```
- 0. SK = HKDF_mod_r(seed)
- 1. return SK
- ```
-@@ -239,7 +239,7 @@ There are no major backwards compatibility issues brought upon by this EIP as it
- 
- ### Test Case 0
- 
--```text
-+```
- seed = 0xc55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04
- master_SK = 6083874454709270928345386274498605044986640685124978867557563392430687146096
- child_index = 0
-@@ -255,14 +255,14 @@ passphrase = "TREZOR"
- 
- This test case can be extended to test the entire `mnemonic-to -child_SK` stack, assuming [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) is used as the mnemonic generation mechanism. Using the following parameters, the above seed can be calculated:
- 
--```text
-+```
- mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
- passphrase = "TREZOR"
- ```
- 
- ### Test Case 1
- 
--```text
-+```
- seed = 0x3141592653589793238462643383279502884197169399375105820974944592
- master_SK = 29757020647961307431480504535336562678282505419141012933316116377660817309383
- child_index = 3141592653
-@@ -271,7 +271,7 @@ child_SK = 254572016888506919477276293851917045167447961149258979626762482509293
- 
- ### Test Case 2
- 
--```text
-+```
- seed = 0x0099FF991111002299DD7744EE3355BBDD8844115566CC55663355668888CC00
- master_SK = 27580842291869792442942448775674722299803720648445448686099262467207037398656
- child_index = 4294967295
-@@ -280,7 +280,7 @@ child_SK = 293586107944594288604022343418742812408037862940620358740212527348175
- 
- ### Test Case 3
- 
--```text
-+```
- seed = 0xd4e56740f876aef8c010b86a40d5f56745a118d0906a34e69aec8c0db1cb8fa3
- master_SK = 19022158461524446591288038168518313374041767046816487870552872741050760015818
- child_index = 42
-@@ -289,7 +289,7 @@ child_SK = 313722316504790702797742970618235721664965648384727874882497755727890
- 
- ### Test Vector with Intermediate values
- 
--```text
-+```
- seed = 0xc55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e53495531f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04
- master_SK = 6083874454709270928345386274498605044986640685124978867557563392430687146096
- child_index = 0
 diff --git a/content/02334.md b/content/02334.md
 index 6eadb7c6..0cd68251 100644
 --- a/content/02334.md
@@ -622,19 +520,6 @@ index 6cc12b77..4f4e7e9a 100644
  Requesting Signature To Approve Data Signer\n\nOrigin: ${username}\nApproved Signer: ${dataSigner}\nApproved By: ${caip10}
  ```
  
-diff --git a/content/02333.md b/content/02333.md
-index 392e413b..6144ea17 100644
---- a/content/02333.md
-+++ b/content/02333.md
-@@ -248,7 +248,7 @@ child_SK = 203977898597366509423174122624725581078753921724440767926710919752109
- 
- This test case can be extended to test the entire mnemonic-to-`child_SK` stack, assuming [BIP39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) is used as the mnemonic generation mechanism. Using the following parameters, the above seed can be calculated:
- 
--```test
-+```
- mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
- passphrase = "TREZOR"
- ```
 diff --git a/content/03772.md b/content/03772.md
 index 97d6a586..456136ed 100644
 --- a/content/03772.md
@@ -661,26 +546,6 @@ index f7ac0d46..4e5d3e64 100644
  function copyrightOwner(uint256 tokenId) external returns address;
  ```
  
-diff --git a/content/07518/index.md b/content/07518/index.md
-index a68e97b2..80e0c323 100644
---- a/content/07518/index.md
-+++ b/content/07518/index.md
-@@ -214,7 +214,7 @@ function removeRestriction(uint id) external returns (bool)
- 
- ### `safeTransferFrom`
- 
--```solidi
-+```solidity
- function safeTransferFrom(address _from, address _to, uint256 _id, uint256 _value, bytes calldata _data) override external;
- ```
- 
-@@ -570,4 +570,4 @@ The proposal is fully compatible with [ERC-1155](../01155.md) , and any [ERC-115
- 
- ## Copyright
- 
--Copyright and related rights waived via [CC0](/LICENSE.md).
-\ No newline at end of file
-+Copyright and related rights waived via [CC0](/LICENSE.md).
 diff --git a/content/07673.md b/content/07673.md
 index 43a2ba81..dc3ec344 100644
 --- a/content/07673.md
@@ -694,19 +559,6 @@ index 43a2ba81..dc3ec344 100644
  to_emoji = [
      '🚀', '🪐', '☄', '🛰', '🌌', '🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘', '🌍', '🌏', '🌎',
      '🐉', '☀', '💻', '🖥', '💾', '💿', '😂', '❤', '😍', '🤣', '😊', '🙏', '💕', '😭', '😘', '👍',
-diff --git a/content/02333.md b/content/02333.md
-index 6144ea17..9c649662 100644
---- a/content/02333.md
-+++ b/content/02333.md
-@@ -87,7 +87,7 @@ Every key generated via the key derivation process derives a child key via a set
- 
- ##### Procedure
- 
--``` text
-+```
- 0. PRK = HKDF-Extract(salt, IKM)
- 1. OKM = HKDF-Expand(PRK, "" , L)
- 2. lamport_SK = bytes_split(OKM, K)
 diff --git a/content/05094.md b/content/05094.md
 index e6fb6353..f9441dae 100644
 --- a/content/05094.md
@@ -984,3 +836,119 @@ index 7aa6ec32..959d92e4 100644
  // Alice requests a permission from Bob
  const permissionsResponse = await bob.request({
    method: 'wallet_grantPermissions',
+diff --git a/content/07832.md b/content/07832.md
+index d19fdeaa..8eb96e9b 100644
+--- a/content/07832.md
++++ b/content/07832.md
+@@ -189,7 +189,7 @@ Allows the caller to mint a new token to their address with a provided URI.
+ Calculates and returns the current minting fee that the caller **MUST** pay, based on the number of mints performed during his current discount per mint cycle. Is **RECOMMENDED** that the fee use a logarithmic reduction to adjust the fee smoothly.
+ 
+ > Formula:
+-```math
++```
+ \text{mintFee} = 
+ \begin{cases}
+ 0, & \text{if msg.sender has the ADMIN\_ROLE} \\ 
+diff --git a/content/02333.md b/content/02333.md
+index b2f60860..dca8375c 100644
+--- a/content/02333.md
++++ b/content/02333.md
+@@ -80,7 +80,7 @@ Every key generated via the key derivation process derives a child key via a set
+ 
+ ##### Procedure
+ 
+-``` text
++```
+ 0. PRK = HKDF-Extract(salt, IKM)
+ 1. OKM = HKDF-Expand(PRK, "" , L)
+ 2. lamport_SK = bytes_split(OKM, K)
+diff --git a/content/07908/index.md b/content/07908/index.md
+index ac57e485..3f9877cb 100644
+--- a/content/07908/index.md
++++ b/content/07908/index.md
+@@ -349,7 +349,7 @@ if __name__ == "__main__":
+ 
+ run script:
+ 
+-```shell
++```bash
+ pip install bip32utils eth_account
+ 
+ python stms.py
+diff --git a/content/07930.md b/content/07930.md
+index ae901f98..aee0c5c8 100644
+--- a/content/07930.md
++++ b/content/07930.md
+@@ -99,7 +99,7 @@ Recall that an _Interoperable Name_ is a human readable representation of an und
+ Its format is `<address> @ <chain> # <checksum>` where the components match the following regular expressions:
+ 
+ #### Syntax
+-```bnf
++```abnf
+ <address>             ::= [.-:_%a-zA-Z0-9]*
+ <chain>               ::= [.-:_a-zA-Z0-9]*
+ <checksum>            ::= [0-9A-F]{8}
+@@ -328,4 +328,4 @@ Copyright and related rights waived via [CC0](/LICENSE.md).
+ [CAIP-10]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00010.md
+ [CAIP-50]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00050.md
+ [CAIP-350]: https://github.com/ChainAgnostic/CAIPs/blob/29762ef99a6ffea1e07e3f796c0d1a5a95e89b88/CAIPs/./00350.md
+-[RFC 4648]: https://www.rfc-editor.org/rfc/rfc4648
+\ No newline at end of file
++[RFC 4648]: https://www.rfc-editor.org/rfc/rfc4648
+diff --git a/content/07946.md b/content/07946.md
+index 32ddbe42..9419e465 100644
+--- a/content/07946.md
++++ b/content/07946.md
+@@ -135,7 +135,7 @@ The UWULink message includes a oneof/union to indicate which mode is used. Walle
+ 
+ Below is the proposed Protocol Buffers v3<!-- TODO: add a link to a specific git commit after eipw is updated --> schema defining the UWULink message format:
+ 
+-```protobuf
++```
+ syntax = "proto3";
+ 
+ package org.ethereum.uwulink;
+diff --git a/content/07893/assets/full-test-case.md b/content/07893/assets/full-test-case.md
+index 20086a5f..74a96464 100644
+--- a/content/07893/assets/full-test-case.md
++++ b/content/07893/assets/full-test-case.md
+@@ -87,7 +87,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
+ ### Mathematical Model Application
+ 
+ 1. **Solvency Ratio (SR) Calculation**
+-   ```math
++   ```
+    SR = (TA / TL) × 100
+    ```
+    Applied in test case:
+@@ -97,7 +97,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
+    ```
+ 
+ 2. **Risk-Adjusted Health Factor**
+-   ```math
++   ```
+    HF = (∑(Ai × Pi × Wi)) / (∑(Li × Pi × Ri))
+    ```
+    Test implementation:
+@@ -106,7 +106,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
+    - Risk Factor (Ri): 1.2
+ 
+ 3. **Volatility Calculation**
+-   ```math
++   ```
+    σ = √(∑(rt - μ)²/n)
+    ```
+    Where:
+diff --git a/content/02333.md b/content/02333.md
+index dca8375c..f0d6825d 100644
+--- a/content/02333.md
++++ b/content/02333.md
+@@ -241,7 +241,7 @@ child_SK = 203977898597366509423174122624725581078753921724440767926710919752109
+ 
+ This test case can be extended to test the entire mnemonic-to-`child_SK` stack, assuming [BIP39](https://github.com/bitcoin/bips/blob/43ce3a461dfb48e62ffa0cfc70f5f54d1eb5c577/bip-0039.mediawiki) is used as the mnemonic generation mechanism. Using the following parameters, the above seed can be calculated:
+ 
+-```test
++```
+ mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+ passphrase = "TREZOR"
+ ```

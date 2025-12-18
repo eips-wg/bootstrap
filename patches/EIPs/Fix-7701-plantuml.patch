@@ -1,0 +1,34 @@
+diff --git a/content/07701/assets/complete_flow.md b/content/07701/assets/complete_flow.puml
+similarity index 98%
+rename from content/07701/assets/complete_flow.md
+rename to content/07701/assets/complete_flow.puml
+index 52d55a7f..4ce6e102 100644
+--- a/content/07701/assets/complete_flow.md
++++ b/content/07701/assets/complete_flow.puml
+@@ -1,4 +1,3 @@
+-```plantuml
+ title EIP-7701 Complete Transaction Flow
+ 
+ actor "User"
+@@ -52,4 +51,3 @@ note over PC: ""ACCEPTROLE 0xA4""
+ end
+ |||
+ end
+-```
+diff --git a/content/07701/assets/simple_flow.md b/content/07701/assets/simple_flow.puml
+similarity index 98%
+rename from content/07701/assets/simple_flow.md
+rename to content/07701/assets/simple_flow.puml
+index ece3b562..74853273 100644
+--- a/content/07701/assets/simple_flow.md
++++ b/content/07701/assets/simple_flow.puml
+@@ -1,4 +1,3 @@
+-```plantuml
+ title EIP-7701 Simple Transaction Flow
+ 
+ actor "User"
+@@ -28,4 +27,3 @@ note over "Sender Contract": ""ACCEPTROLE 0xA3""
+ |||
+ end
+ |||
+-```
