@@ -1,0 +1,76 @@
+diff --git a/content/04824/index.md b/content/04824/index.md
+index 381013c8..4b26f8cf 100644
+--- a/content/04824/index.md
++++ b/content/04824/index.md
+@@ -116,7 +116,7 @@ Members JSON-LD Schema. Every contract implementing this EIP SHOULD implement a
+ }
+ ```
+ 
+-For example, for an address on Ethereum Mainnet, the [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/ad0cfebc45a4b8368628340bf22aefb2a5edcab7/CAIPs/../00010.md) address would be of the form `eip155:1:0x1234abcd`, while the DID address would be of the form `did:ethr:0x1234abcd`.
++For example, for an address on Ethereum Mainnet, the [CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/ad0cfebc45a4b8368628340bf22aefb2a5edcab7/CAIPs/caip-10.md) address would be of the form `eip155:1:0x1234abcd`, while the DID address would be of the form `did:ethr:0x1234abcd`.
+ 
+ ### Proposals
+ 
+diff --git a/content/07700/index.md b/content/07700/index.md
+index 4f4e7e9a..edd06d31 100644
+--- a/content/07700/index.md
++++ b/content/07700/index.md
+@@ -193,7 +193,7 @@ function keygen(
+ This `keygen()` function requires three variables: `username`, `spice` and `sigKeygen`. Their definitions are given below.
+ 
+ ##### 1. `username`
+-[CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/ad0cfebc45a4b8368628340bf22aefb2a5edcab7/CAIPs/../00010.md) identifier `username` is auto-derived from the connected wallet's checksummed address `wallet` and `chainId` using [EIP-155](./eip-155).
++[CAIP-10](https://github.com/ChainAgnostic/CAIPs/blob/ad0cfebc45a4b8368628340bf22aefb2a5edcab7/CAIPs/caip-10.md) identifier `username` is auto-derived from the connected wallet's checksummed address `wallet` and `chainId` using [EIP-155](./eip-155).
+ 
+ ```js
+ /* CAIP-10 identifier */
+@@ -504,4 +504,4 @@ None
+ 3. Clients must immediately purge the `password` and `spice` from local storage after usage in the `keygen()` function.
+ 
+ ## Copyright
+-Copyright and related rights waived via [CC0](/LICENSE.md).
+\ No newline at end of file
++Copyright and related rights waived via [CC0](/LICENSE.md).
+diff --git a/content/07811.md b/content/07811.md
+index d01eac28..bed2367b 100644
+--- a/content/07811.md
++++ b/content/07811.md
+@@ -247,7 +247,7 @@ Example:
+ 
+ ### Capabilities
+ 
+-If the wallet is using [CAIP-25](https://github.com/ChainAgnostic/CAIPs/blob/0848f06f6cfc29ce619bccdd5035c1d500033b21/CAIPs/./00025.md) authorization, wallet **SHOULD** include `wallet_getAssets` in the `methods` array in `sessionScopes` of `eip155` namespace.
++If the wallet is using [CAIP-25](https://github.com/ChainAgnostic/CAIPs/blob/0848f06f6cfc29ce619bccdd5035c1d500033b21/CAIPs/caip-25.md) authorization, wallet **SHOULD** include `wallet_getAssets` in the `methods` array in `sessionScopes` of `eip155` namespace.
+ 
+ If the wallet supports [ERC-5792](./05792.md) wallet **SHOULD** respond on `wallet_getCapabilities` request using the `assetDiscovery` key. Value should be an object with `supported` key and value `true`
+ Wallet **SHOULD** include this for every chainId.
+diff --git a/content/07828.md b/content/07828.md
+index 91759894..a0d6c0a9 100644
+--- a/content/07828.md
++++ b/content/07828.md
+@@ -236,7 +236,7 @@ Copyright and related rights waived via [CC0](/LICENSE.md).
+ 
+ 
+ [ERC-7930]: ./07930.md
+-[CAIP 2]: https://github.com/ChainAgnostic/CAIPs/blob/36ef9ee906da090366cb679634a0850e91785db6/CAIPs/./00002.md
++[CAIP 2]: https://github.com/ChainAgnostic/CAIPs/blob/36ef9ee906da090366cb679634a0850e91785db6/CAIPs/caip-2.md
+ [UTS #46]: https://www.unicode.org/reports/tr46/tr46-35.html
+ [ENSIP-1]: https://docs.ens.domains/ensip/1/
+ [ENSIP-9]: https://docs.ens.domains/ensip/9/
+diff --git a/content/07930.md b/content/07930.md
+index aee0c5c8..5e9aab13 100644
+--- a/content/07930.md
++++ b/content/07930.md
+@@ -324,8 +324,8 @@ Copyright and related rights waived via [CC0](/LICENSE.md).
+ [ERC-55]: ./00055.md
+ [ERC-3770]: ./03770.md
+ [ERC-7785]: ./07785.md
+-[CAIP-2]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00002.md
+-[CAIP-10]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00010.md
+-[CAIP-50]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00050.md
+-[CAIP-350]: https://github.com/ChainAgnostic/CAIPs/blob/29762ef99a6ffea1e07e3f796c0d1a5a95e89b88/CAIPs/./00350.md
++[CAIP-2]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/caip-2.md
++[CAIP-10]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/caip-10.md
++[CAIP-50]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/caip-50.md
++[CAIP-350]: https://github.com/ChainAgnostic/CAIPs/blob/29762ef99a6ffea1e07e3f796c0d1a5a95e89b88/CAIPs/caip-350.md
+ [RFC 4648]: https://www.rfc-editor.org/rfc/rfc4648

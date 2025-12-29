@@ -1,0 +1,32 @@
+diff --git a/content/00001/index.md b/content/00001/index.md
+index 31791a96..bba17121 100644
+--- a/content/00001/index.md
++++ b/content/00001/index.md
+@@ -383,12 +383,12 @@ Which renders to:
+ Links to a Chain Agnostic Improvement Proposals (CAIPs) specification may be included using normal markdown syntax, such as:
+ 
+ ```markdown
+-[CAIP 10](https://github.com/ChainAgnostic/CAIPs/blob/5dd3a2f541d399a82bb32590b52ca4340b09f08b/CAIPs/../00010.md)
++[CAIP 10](https://github.com/ChainAgnostic/CAIPs/blob/5dd3a2f541d399a82bb32590b52ca4340b09f08b/CAIPs/caip-10.md)
+ ```
+ 
+ Which renders to:
+ 
+-[CAIP 10](https://github.com/ChainAgnostic/CAIPs/blob/5dd3a2f541d399a82bb32590b52ca4340b09f08b/CAIPs/../00010.md)
++[CAIP 10](https://github.com/ChainAgnostic/CAIPs/blob/5dd3a2f541d399a82bb32590b52ca4340b09f08b/CAIPs/caip-10.md)
+ 
+ Permitted Chain Agnostic URLs must anchor to a specific commit, and so must match this regular expression:
+ 
+diff --git a/content/05792.md b/content/05792.md
+index de45678f..5283bd93 100644
+--- a/content/05792.md
++++ b/content/05792.md
+@@ -285,7 +285,7 @@ This method SHOULD return an `4100 Unauthorized` error if the user has not alrea
+ 
+ We expect the community to align on the definition of additional capabilities in separate ERCs over time.
+ 
+-Note that in addition to, or instead of, querying the wallet directly for capabilities, the same capability objects MAY be exposed out-of-band, such as in a `sessionProperties` and/or `scopedProperties` collections persisted in a [CAIP-25](https://github.com/ChainAgnostic/CAIPs/blob/c599f7601d0ce83e6dd9f350c6c21d158d56fd6d/CAIPs/./00025.md)-conformant wallet provider interface (see the ethereum usage profile for CAIP-25 for an example request and response), or in some other a well-known location (such as a URL derived from an [EIP-6963](./06963.md) `rdns` identifier).
++Note that in addition to, or instead of, querying the wallet directly for capabilities, the same capability objects MAY be exposed out-of-band, such as in a `sessionProperties` and/or `scopedProperties` collections persisted in a [CAIP-25](https://github.com/ChainAgnostic/CAIPs/blob/c599f7601d0ce83e6dd9f350c6c21d158d56fd6d/CAIPs/caip-25.md)-conformant wallet provider interface (see the ethereum usage profile for CAIP-25 for an example request and response), or in some other a well-known location (such as a URL derived from an [EIP-6963](./06963.md) `rdns` identifier).
+ Provider abstractions MAY also cache capabilities from previous requests or otherwise inject them from out-of-band to facilitate better user experience.
+ If any of these supplemental expressions of capabilities are contradicted by capabilities expressed in live wallet RPC responses, these latter values SHOULD be taken as the canonical and current expression of capabilities.
+ 
