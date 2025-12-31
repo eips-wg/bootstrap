@@ -1,0 +1,26 @@
+diff --git a/content/01057/index.md b/content/01057/index.md
+index 14580248..3d54f021 100644
+--- a/content/01057/index.md
++++ b/content/01057/index.md
+@@ -200,7 +200,7 @@ uint32_t kiss99(kiss99_t &st)
+ 
+ The `fill_mix` function populates an array of `int32` values used by each lane in the hash calculations.
+ 
+-Test vectors can be found [in the test vectors file](./assets/test-vectors.md#fill_mix).
++Test vectors can be found [in the test vectors file](./assets/test-vectors.md#fill-mix).
+ 
+ ```cpp
+ void fill_mix(
+diff --git a/content/01474.md b/content/01474.md
+index eaa0c7cf..0341cec8 100644
+--- a/content/01474.md
++++ b/content/01474.md
+@@ -286,7 +286,7 @@ Common chain IDs:
+ - `"4"` - Rinkeby testnet
+ - `"42"` - Kovan testnet
+ 
+-**Note:** See EIP-155 for a [complete list](./00155.md#list-of-chain-ids) of possible chain IDs.
++**Note:** See EIP-155 for a [complete list](./00155.md#list-of-chain-id-s) of possible chain IDs.
+ 
+ ##### Example
+ 
