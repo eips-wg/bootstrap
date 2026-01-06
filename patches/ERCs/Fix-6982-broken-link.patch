@@ -1,0 +1,31 @@
+diff --git a/content/06982/assets/README.md b/content/06982/assets/README.md
+index 0bcf04ad..587ca2d1 100644
+--- a/content/06982/assets/README.md
++++ b/content/06982/assets/README.md
+@@ -9,3 +9,13 @@ npm i -g pnpm
+ pnpm i
+ pnpm test
+ ```
++
++## Directory Listing
++
++- [`contracts/ERC721Lockable.sol`](./contracts/ERC721Lockable.sol)
++- [`contracts/IERC6982.sol`](./contracts/IERC6982.sol)
++- [`contracts/IERC721Lockable.sol`](./contracts/IERC721Lockable.sol)
++- [`contracts/mocks/ERC721LockableMock.sol`](./contracts/mocks/ERC721LockableMock.sol)
++- [`contracts/mocks/MyLocker.sol`](./contracts/mocks/MyLocker.sol)
++- [`test/Lockable.test.js`](./test/Lockable.test.js)
++- [`test/helpers.js`](./test/helpers.js)
+diff --git a/content/06982/index.md b/content/06982/index.md
+index f6b5e17d..83574364 100644
+--- a/content/06982/index.md
++++ b/content/06982/index.md
+@@ -80,7 +80,7 @@ This standard is fully backwards compatible with existing [ERC-721](../00721.md)
+ 
+ ## Reference Implementation
+ 
+-An example implementation is located in the [assets](../assets/eip-6982) directory.
++An example implementation is located in the [assets](./assets/README.md).
+ 
+ It solves a specific use case: token's owners losing the ownership when staking the asset in a pool. The implementation allow the pool to lock the asset, leaving the ownership to the owner. In the [README](./assets/README.md) you can find more details about how to compile and test the contracts.
+ 
