@@ -1,0 +1,683 @@
+diff --git a/content/00831.md b/content/00831.md
+index 36483d41..cf9d7f81 100644
+--- a/content/00831.md
++++ b/content/00831.md
+@@ -29,7 +29,7 @@ Ethereum URIs contain "ethereum" or "eth" in their schema (protocol) part and ar
+ 
+ `prefix` is optional and defines the use-case for this URI. If no prefix is given: "pay-" is assumed to be concise and ensure backward compatibility to [EIP-67](./00067.md). When the prefix is omitted, the payload must start with `0x`. Also prefixes must not start with `0x`. So starting with `0x` can be used as a clear signal that there is no prefix.
+ 
+-`payload` is mandatory and the content depends on the prefix. Structuring of the content is defined in the ERC for the specific use-case and not in the scope of this document. One example is [EIP-681](./eip-681) for the pay- prefix.
++`payload` is mandatory and the content depends on the prefix. Structuring of the content is defined in the ERC for the specific use-case and not in the scope of this document. One example is [EIP-681](./00681.md) for the pay- prefix.
+ 
+ ## Rationale
+ 
+diff --git a/content/04337/index.md b/content/04337/index.md
+index 710aa46e..bbd063c5 100644
+--- a/content/04337/index.md
++++ b/content/04337/index.md
+@@ -256,7 +256,7 @@ to verify that the signature is correct and the `UserOperation` actually pays fe
+ A node/bundler MUST reject a `UserOperation` that fails the validation, meaning not adding it to the local mempool
+ and not propagating it to other peers.
+ 
+-### JSON-RPC API for [ERC-4337](./eip-4337)
++### JSON-RPC API for [ERC-4337](./index.md)
+ 
+ In order to support sending `UserOperation` objects to bundlers, which in turn propagate them through the P2P mempool,
+ we introduce a set of JSON-RPC APIs including `eth_sendUserOperation` and `eth_getUserOperationReceipt`.
+@@ -632,11 +632,11 @@ either via on-chain delegate proxy contracts or via EIP-7702.
+ When changing the underlying implementation, all Accounts MUST ensure that there are no conflicts in the storage layout
+ of the two contracts.
+ 
+-One common approach to this problem is often referred to as "diamond storage" and is fully described in [ERC-7201](./eip-7201).
++One common approach to this problem is often referred to as "diamond storage" and is fully described in [ERC-7201](../07201.md).
+ 
+ ### Transient Storage
+ 
+-Contracts using the [EIP-1153](./eip-1153) transient storage MUST take into account that ERC-4337 allows multiple
++Contracts using the [EIP-1153](../01153.md) transient storage MUST take into account that ERC-4337 allows multiple
+ `UserOperations` from different unrelated `sender` addresses to be included in the same underlying transaction.
+ The transient storage MUST be cleaned up manually if contains any sensitive information or is used for access control.
+ 
+diff --git a/content/04494.md b/content/04494.md
+index a5f22fba..1cd5b421 100644
+--- a/content/04494.md
++++ b/content/04494.md
+@@ -160,7 +160,7 @@ ERC-712 typed messages are included because of its use in [ERC-2612](./02612.md)
+ 
+ While ERC-2612 focuses on the value being approved, this EIP focuses on the `tokenId` of the NFT being approved via `permit`. This enables a flexibility that cannot be achieved with ERC-20 (or even [ERC-1155](./01155.md)) tokens, enabling a single owner to give multiple permits on the same NFT. This is possible since each ERC-721 token is discrete (oftentimes referred to as non-fungible), which allows assertion that this token is still in the possession of the `owner` simply and conclusively.
+ 
+-Whereas ERC-2612 splits signatures into their `v,r,s` components, this EIP opts to instead take a `bytes` array of variable length in order to support [EIP-2098](./eip-2098) signatures (64 bytes), which cannot be easily separated or reconstructed from `r,s,v` components (65 bytes).
++Whereas ERC-2612 splits signatures into their `v,r,s` components, this EIP opts to instead take a `bytes` array of variable length in order to support [EIP-2098](./02098.md) signatures (64 bytes), which cannot be easily separated or reconstructed from `r,s,v` components (65 bytes).
+ 
+ ## Backwards Compatibility
+ There are already some ERC-721 contracts implementing a `permit`-style architecture, most notably Uniswap v3. 
+diff --git a/content/04824/index.md b/content/04824/index.md
+index 4b26f8cf..9eea7f19 100644
+--- a/content/04824/index.md
++++ b/content/04824/index.md
+@@ -16,7 +16,7 @@ An API standard for decentralized autonomous organizations (DAOs), focused on re
+ 
+ ## Motivation
+ 
+-DAOs, since being invoked in the Ethereum whitepaper, have been vaguely defined. This has led to a wide range of patterns but little standardization or interoperability between the frameworks and tools that have emerged. Standardization and interoperability are necessary to support a variety of use-cases. In particular, a standard daoURI, similar to tokenURI in [ERC-721](./eip-721), will enhance DAO discoverability, legibility, proposal simulation, and interoperability between tools. More consistent data across the ecosystem is also a prerequisite for future DAO standards.
++DAOs, since being invoked in the Ethereum whitepaper, have been vaguely defined. This has led to a wide range of patterns but little standardization or interoperability between the frameworks and tools that have emerged. Standardization and interoperability are necessary to support a variety of use-cases. In particular, a standard daoURI, similar to tokenURI in [ERC-721](../00721.md), will enhance DAO discoverability, legibility, proposal simulation, and interoperability between tools. More consistent data across the ecosystem is also a prerequisite for future DAO standards.
+ 
+ ## Specification
+ 
+@@ -59,7 +59,7 @@ When reporting information in the DAO JSON-LD Schema, if a given field has no va
+ 
+ ### Indexing
+ 
+-If a DAO inherits the `IERC4824` interface from a 4824-compliant DAO factory, then the DAO factory SHOULD incorporate a call to an indexer contract as part of the DAO's initialization to enable efficient network indexing. If the DAO is [ERC-165](./eip-165)-compliant, the factory can do this without additional permissions. If the DAO is _not_ compliant with ERC-165, the factory SHOULD first obtain access control rights to the indexer contract and then call `logRegistration` directly with the address of the new DAO and the daoURI of the new DAO. Note that any user, including the DAO itself, MAY call `logRegistration` and submit a registration for a DAO which inherits the `IERC4824` interface and which is also ERC-165-compliant.
++If a DAO inherits the `IERC4824` interface from a 4824-compliant DAO factory, then the DAO factory SHOULD incorporate a call to an indexer contract as part of the DAO's initialization to enable efficient network indexing. If the DAO is [ERC-165](../00165.md)-compliant, the factory can do this without additional permissions. If the DAO is _not_ compliant with ERC-165, the factory SHOULD first obtain access control rights to the indexer contract and then call `logRegistration` directly with the address of the new DAO and the daoURI of the new DAO. Note that any user, including the DAO itself, MAY call `logRegistration` and submit a registration for a DAO which inherits the `IERC4824` interface and which is also ERC-165-compliant.
+ 
+ ```solidity
+ pragma solidity ^0.8.1;
+diff --git a/content/05559.md b/content/05559.md
+index 8b1b555d..584821ac 100644
+--- a/content/05559.md
++++ b/content/05559.md
+@@ -16,10 +16,10 @@ The following standard provides a mechanism in which smart contracts can request
+ 
+ This standard outlines a set of handler types that can be used for managing the execution and storage of mutations (tasks), as well as their corresponding tradeoffs. Each handler type has associated operational costs, finality guarantees, and levels of decentralization. By further specifying the type of handler that the mutation is deferred to, the protocol can better define how to permission and secure their system. 
+ 
+-This standard can be implemented in conjunction with [EIP-3668](./eip-3668) to provide a mechanism in which protocols can reside on and be interfaced through an L1 contract on mainnet, while being able to resolve and mutate data stored in external systems.
++This standard can be implemented in conjunction with [EIP-3668](./03668.md) to provide a mechanism in which protocols can reside on and be interfaced through an L1 contract on mainnet, while being able to resolve and mutate data stored in external systems.
+ 
+ ## Motivation
+-[EIP-3668](./eip-3668) provides a mechanism by which off-chain lookups can be defined inside smart contracts in a transparent manner. In addition, it provides a scheme in which the resolved data can be verified on-chain. However, there lacks a standard by which mutations can be requested through the native contract, to be performed on the off-chain data. Furthermore, with the increase in L2 solutions, smart contract engineers have additional tools that can be used to reduce the storage and transaction costs of performing mutations on the Ethereum mainnet. 
++[EIP-3668](./03668.md) provides a mechanism by which off-chain lookups can be defined inside smart contracts in a transparent manner. In addition, it provides a scheme in which the resolved data can be verified on-chain. However, there lacks a standard by which mutations can be requested through the native contract, to be performed on the off-chain data. Furthermore, with the increase in L2 solutions, smart contract engineers have additional tools that can be used to reduce the storage and transaction costs of performing mutations on the Ethereum mainnet. 
+ 
+ A specification that allows smart contracts to defer the storage and resolution of data to external handlers facilitates writing clients agnostic to the storage solution being used, enabling new applications that can operate without knowledge of the underlying handlers associated with the contracts they interact with.
+ 
+@@ -147,7 +147,7 @@ The user, receiving this error, creates a new transaction for the corresponding
+ 
+ The call or transaction to the L1 contract reverts with the `StorageHandledByOffChainDatabase(sender, url, data)` error.
+ 
+-In this case, the client performs a HTTP POST request to the gateway service. The gateway service is defined by `url`. The body attached to the request is a JSON object that includes `sender`, `data`, and a signed copy of `data` denoted `signature`. The signature is generated according to a [EIP-712](./eip-712), in which a typed data signature is generated using domain definition, `sender`, and the message context, `data`.
++In this case, the client performs a HTTP POST request to the gateway service. The gateway service is defined by `url`. The body attached to the request is a JSON object that includes `sender`, `data`, and a signed copy of `data` denoted `signature`. The signature is generated according to a [EIP-712](./00712.md), in which a typed data signature is generated using domain definition, `sender`, and the message context, `data`.
+ 
+ `sender` ia an ABI-encoded struct defined as:
+ 
+@@ -195,7 +195,7 @@ struct parameter {
+ }
+ ```
+ 
+-`signature` is generated by using the `sender` & `data` parameters to construct an [EIP-712](./eip-712) typed data signature.
++`signature` is generated by using the `sender` & `data` parameters to construct an [EIP-712](./00712.md) typed data signature.
+ 
+ The body used in the HTTP POST request is defined as:
+ 
+@@ -326,7 +326,7 @@ In this case, the client builds a new transaction for `contractAddress` with the
+ 
+ That call or transaction to the L2 contract then reverts with the `StorageHandledByOffChainDatabase(sender, url, data)` error.
+ 
+-In this case, the client then performs a HTTP POST request against the gateway service. The gateway service is defined by `url`. The body attached to the request is a JSON object that includes `sender`, `data`, and `signature` -- a typed data signature corresponding to [EIP-712](./eip-712). 
++In this case, the client then performs a HTTP POST request against the gateway service. The gateway service is defined by `url`. The body attached to the request is a JSON object that includes `sender`, `data`, and `signature` -- a typed data signature corresponding to [EIP-712](./00712.md). 
+ 
+ ### Events
+ 
+@@ -443,7 +443,7 @@ This functionality is ideal for applications that want to allow their users to d
+ 
+ ## Rationale
+ ### Use of `revert` to convey call information
+-[EIP-3668](./eip-3668) adopted the idea of using a `revert` to convey call information. It was proposed as a simple mechanism in which any pre-existing interface or function signature could be satisfied while maintain a mechanism to instruct and trigger an off-chain lookup. 
++[EIP-3668](./03668.md) adopted the idea of using a `revert` to convey call information. It was proposed as a simple mechanism in which any pre-existing interface or function signature could be satisfied while maintain a mechanism to instruct and trigger an off-chain lookup. 
+ 
+ This is very similar for the write deferral protocol, defined in this EIP; without any modifications to the ABI or underlying EVM, `revert` provides a clean mechanism in which we can "return" a typed instruction - and the corresponding elements to complete that action - without modifying the signature of the corresponding function. This makes it easy to comply with pre-existing interfaces and infrastructure. 
+ 
+diff --git a/content/06982/index.md b/content/06982/index.md
+index 83574364..394fc5fc 100644
+--- a/content/06982/index.md
++++ b/content/06982/index.md
+@@ -66,7 +66,7 @@ Tokens may alter their behavior under certain circumstances (such as after a rev
+ 
+ The `Locked` event is utilized to document changes in the lock status of individual tokens.
+ 
+-The `defaultLocked` function returns the prevailing default lock status of a token. This function is beneficial as it fosters interaction with other contracts and averts potential conflicts with [ERC-5192](./eip-5192), which is in its final stage.
++The `defaultLocked` function returns the prevailing default lock status of a token. This function is beneficial as it fosters interaction with other contracts and averts potential conflicts with [ERC-5192](../05192.md), which is in its final stage.
+ 
+ The `locked` function gives the current lock status of a particular token, further facilitating interaction with other contracts. If no changes have been made to a specific token ID, this function should return the value provided by the `defaultLocked` function.
+ 
+diff --git a/content/07303.md b/content/07303.md
+index 8bae7bd8..1189864e 100644
+--- a/content/07303.md
++++ b/content/07303.md
+@@ -52,7 +52,7 @@ Employing a transferable control token can cater to scenarios where role delegat
+ 
+ ## Backwards Compatibility
+ 
+-This ERC is designed to be compatible for [ERC-721](./eip-721), [ERC-1155](./eip-1155), and [ERC-5679](./eip-5679) respectively.
++This ERC is designed to be compatible for [ERC-721](./00721.md), [ERC-1155](./01155.md), and [ERC-5679](./05679.md) respectively.
+ 
+ ## Reference Implementation
+ 
+diff --git a/content/07540.md b/content/07540.md
+index 7c9ab886..fd0de3e7 100644
+--- a/content/07540.md
++++ b/content/07540.md
+@@ -426,11 +426,11 @@ Smart contracts implementing this Vault standard MUST implement the [ERC-7575](.
+ ## Rationale
+ 
+ ### Including Request IDs but not including a Claim by ID method
+-Requests in an Asynchronous Vault have properties of NFTs or Semi-Fungible tokens due to their asynchronicity. However, trying to pigeonhole all ERC-7540 Vaults into supporting [ERC-721](./eip-721) or [ERC-1155](./eip-1155) for Requests would create too much interface bloat. 
++Requests in an Asynchronous Vault have properties of NFTs or Semi-Fungible tokens due to their asynchronicity. However, trying to pigeonhole all ERC-7540 Vaults into supporting [ERC-721](./00721.md) or [ERC-1155](./01155.md) for Requests would create too much interface bloat. 
+ 
+ Using both an id and address to discriminate Requests allows for any of these use cases to be developed at an external layer without adding too much complexity to the core interface.
+ 
+-Certain Vaults, especially `requestId==0` cases, benefit from using the underlying [ERC-4626](./eip-4626) methods for claiming because there is no discrimination at the `requestId` level. This standard is written primarily with those use cases in mind. A future standard can optimize for nonzero request ID with support for claiming and transferring requests discriminated also with a `requestId`.
++Certain Vaults, especially `requestId==0` cases, benefit from using the underlying [ERC-4626](./04626.md) methods for claiming because there is no discrimination at the `requestId` level. This standard is written primarily with those use cases in mind. A future standard can optimize for nonzero request ID with support for claiming and transferring requests discriminated also with a `requestId`.
+ 
+ ### Symmetry and Non-inclusion of requestWithdraw and requestMint
+ 
+@@ -488,7 +488,7 @@ It reduces code and implementation complexity at little to no cost to simply man
+ 
+ ### Mandated Support for [ERC-165](./00165.md)
+ 
+-Implementing support for [ERC-165](./00165.md) is mandated because of the [optionality of flows](#optionality-of-flows). Integrations can use the `supportsInterface` method to check whether a vault is fully asynchronous, partially asynchronous, or fully synchronous (for which it is just following the [ERC-4626](./eip-4626)), and use a single contract to support all cases.
++Implementing support for [ERC-165](./00165.md) is mandated because of the [optionality of flows](#optionality-of-flows). Integrations can use the `supportsInterface` method to check whether a vault is fully asynchronous, partially asynchronous, or fully synchronous (for which it is just following the [ERC-4626](./04626.md)), and use a single contract to support all cases.
+ 
+ ### Not Allowing Pending Claims to be Fungible
+ The async pending claims represent a sort of semi-fungible intermediate share class. Vaults can elect to wrap these claims in any token standard they like, for example, ERC-20, [ERC-1155](./01155.md), or ERC-721 depending on the use case. This is intentionally left out of the spec to provide flexibility to implementers.
+diff --git a/content/07562.md b/content/07562.md
+index 33e9217a..bc4ce09b 100644
+--- a/content/07562.md
++++ b/content/07562.md
+@@ -13,7 +13,7 @@ created: 2023-09-01
+ ## Abstract
+ 
+ This document describes the rules Account Abstraction protocols should follow, during the validation phase of Account Abstraction transactions,
+-such as [ERC-4337](./eip-4337) `UserOperation` or RIP-7560 (Native Account Abstraction), which are enforced off-chain by a
++such as [ERC-4337](./04337.md) `UserOperation` or RIP-7560 (Native Account Abstraction), which are enforced off-chain by a
+ block builder or a standalone bundler, and the rationale behind each one of them.
+ 
+ ## Motivation
+@@ -37,7 +37,7 @@ These validation rules only apply to the validation phase of Account Abstraction
+ 
+ For the actual interfaces of those contract-based accounts see the definitions in ERC-4337 and RIP-7560.
+ 
+-This documentation uses the terminology "UserOperation" for a transaction created by a smart contract account, and closely follows [ERC-4337](./eip-4337) terminology.
++This documentation uses the terminology "UserOperation" for a transaction created by a smart contract account, and closely follows [ERC-4337](./04337.md) terminology.
+ However, the rules apply to any Account Abstraction framework that uses EVM code to perform transaction validation and makes a distinction between validation (whether the operation is eligible for inclusion on the protocol level) and execution (on-chain execution and gas payment) in a public mempool.
+ 
+ ## Specification
+@@ -204,7 +204,7 @@ Because of the reputation `refresh rate`, note that a malicious paymaster can at
+         * Only allow known accepted precompiles on the network, that do not access anything in the blockchain state or environment.
+         * The core precompiles 0x1 .. 0x11
+         * The RIP-7212 secp256r1 precompile, on networks that accepted it.
+-* **[OP-070]** Transient Storage slots defined in [EIP-1153](./eip-1153) and accessed using `TLOAD` (`0x5c`) and `TSTORE` (`0x5d`) opcodes
++* **[OP-070]** Transient Storage slots defined in [EIP-1153](./01153.md) and accessed using `TLOAD` (`0x5c`) and `TSTORE` (`0x5d`) opcodes
+   are treated exactly like persistent storage (SLOAD/SSTORE).
+ * **[OP-080]** `BALANCE` (`0x31`) and `SELFBALANCE` (`0x47`) are allowed only from a staked entity, else they are blocked.
+ 
+@@ -320,7 +320,7 @@ Alt-mempools are served by the same bundlers participating in the canonical memp
+ 
+ ### Authorizations
+ 
+-* **[AUTH-010]** A UserOperation may only contain a single [EIP-7702](./eip-7702) authorization tuple.
++* **[AUTH-010]** A UserOperation may only contain a single [EIP-7702](./07702.md) authorization tuple.
+ * **[AUTH-020]** An account with EIP-7702 delegation can only be used as the Sender of the UserOperation.
+   Using authorized account as any other kind of UserOperation entity is not allowed.
+ * **[AUTH-030]** An account with EIP-7702 delegation can only be **accessed** (using `*CALL` or `EXTCODE*` opcodes) if it is the Sender of the current UserOperation.
+@@ -356,7 +356,7 @@ into the mempool can prevent such attacks.
+ ### The high-level goal
+ 
+ The purpose of this specification is to define a consensus between nodes (bundlers or block-builders) when processing incoming UserOperations from an external source.
+-This external source for UserOperations is either an end-user node (via RPC [ERC-7769](./eip-7769)) or another node in the p2p network.
++This external source for UserOperations is either an end-user node (via RPC [ERC-7769](./07769.md)) or another node in the p2p network.
+ 
+ The protocol tries to detect "spam" - which are large bursts of UserOperations that cannot be included on-chain (and thus can't pay).
+ The network is protected by throttling down requests from such spammer nodes.
+diff --git a/content/07564.md b/content/07564.md
+index 6c47f811..12f2ab0f 100644
+--- a/content/07564.md
++++ b/content/07564.md
+@@ -20,11 +20,11 @@ This proposal introduces a smart contract wallet-based approach for managing NFT
+ 
+ An externally-owned account (EOA) wallet has no state and code storage, while the smart contract wallet does.
+ 
+-Account abstraction (AA) is a direction of the smart contract wallet, which works around abstract accounts. This ERC can also be an extension based on [ERC-4337](./eip-4337) or as a plug-in for wallets.
++Account abstraction (AA) is a direction of the smart contract wallet, which works around abstract accounts. This ERC can also be an extension based on [ERC-4337](./04337.md) or as a plug-in for wallets.
+ 
+ The smart contract wallet allows the user's own account to have state and code, bringing programmability to the wallet. We think there are more directions to expand. For example, nft asset management, functional expansion of nft transactions, etc.
+ 
+-The smart contract wallet interface of this ERC is for nft asset management and nft asset approval. It supports the simplenft <!-- TODO --> ERC-X, and [ERC-721](./eip-721) is backward compatible with <!-- TODO --> ERC-X, so it can be compatible with the management of all nfts in the existing market.
++The smart contract wallet interface of this ERC is for nft asset management and nft asset approval. It supports the simplenft <!-- TODO --> ERC-X, and [ERC-721](./00721.md) is backward compatible with <!-- TODO --> ERC-X, so it can be compatible with the management of all nfts in the existing market.
+ 
+ The proposal aims to achieve the following goals:
+ 
+@@ -41,7 +41,7 @@ The proposal aims to achieve the following goals:
+ 
+ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+ 
+-**Compliant contract must implement the [ERC-165](./eip-165) interfaces**
++**Compliant contract must implement the [ERC-165](./00165.md) interfaces**
+ ```solidity
+ 
+ /// @title ERC-7564
+diff --git a/content/07586/index.md b/content/07586/index.md
+index f3d08906..2724ff61 100644
+--- a/content/07586/index.md
++++ b/content/07586/index.md
+@@ -168,7 +168,7 @@ interface IERC7586 /** is ERC20, ERC165 */ {
+ ```
+ ### Tokenization of Swap Cash Flows
+ 
+-The interest payments associated with the IRS MUST be tokenized by issuing digital [ERC-20](./eip-20) tokens to the respective parties according to the terms of the swap. Each token SHOULD represent a specific interest payment. Every time a swap happens (the `swap` function is called), one token MUST be burned from each party.
++The interest payments associated with the IRS MUST be tokenized by issuing digital [ERC-20](../00020.md) tokens to the respective parties according to the terms of the swap. Each token SHOULD represent a specific interest payment. Every time a swap happens (the `swap` function is called), one token MUST be burned from each party.
+ 
+ ## Rationale
+ 
+diff --git a/content/07604.md b/content/07604.md
+index 2f3c3e6d..6cb1c6eb 100644
+--- a/content/07604.md
++++ b/content/07604.md
+@@ -19,7 +19,7 @@ The structure of [ERC-1155](./01155.md) tokens requires a new ERC to account for
+ 
+ ## Motivation
+ 
+-The permit structures outlined in both [ERC-4494](./eip-4494) and [ERC-2612](./eip-2612) allows a signed message to create an approval, but are only applicable to their respective underlying tokens ([ERC-721](./eip-721) and [ERC-20](./eip-20)).
++The permit structures outlined in both [ERC-4494](./04494.md) and [ERC-2612](./02612.md) allows a signed message to create an approval, but are only applicable to their respective underlying tokens ([ERC-721](./00721.md) and [ERC-20](./00020.md)).
+ 
+ ## Specification
+ 
+diff --git a/content/07682.md b/content/07682.md
+index daf9763c..b35c0114 100644
+--- a/content/07682.md
++++ b/content/07682.md
+@@ -36,7 +36,7 @@ Wallets may also optionally specify which assets they have additional access to
+ 
+ This specification does not put any constraints on the source of the auxiliary funds.
+ 
+-In this specification, a chain's native asset (e.g. Ether on Ethereum) MUST be represented by "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as specified by [EIP-7528](./eip-7528).
++In this specification, a chain's native asset (e.g. Ether on Ethereum) MUST be represented by "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE" as specified by [EIP-7528](./07528.md).
+ 
+ #### `wallet_getCapabilities` Response Specification
+ 
+diff --git a/content/07694/index.md b/content/07694/index.md
+index 3664aa1f..a1796164 100644
+--- a/content/07694/index.md
++++ b/content/07694/index.md
+@@ -13,11 +13,11 @@ requires: 3668, 7700
+ 
+ ## Abstract
+ 
+-The following standard is an extension to the cross-chain storage router protocol introducing the storage router for Solana blockchain. With this specification, any Ethereum L1 contract can defer a call to Solana blockchain as part of its core functionality, provided that the client is equipped to handle Solana transactions. It was previously possible to defer write and storage operations to other Ethereum L1 contracts, L2 contracts and off-chain databases, and this document extends that functionality to include alternative L1 chains. The data stored on Solana must be translated to [EIP-3668](./eip-3668)-compliant format by an appropriate HTTP gateway where it can be retrieved by generic Ethereum contracts. This standard allows Ethereum to utilise a broader range of cross-chain blockspaces.
++The following standard is an extension to the cross-chain storage router protocol introducing the storage router for Solana blockchain. With this specification, any Ethereum L1 contract can defer a call to Solana blockchain as part of its core functionality, provided that the client is equipped to handle Solana transactions. It was previously possible to defer write and storage operations to other Ethereum L1 contracts, L2 contracts and off-chain databases, and this document extends that functionality to include alternative L1 chains. The data stored on Solana must be translated to [EIP-3668](../03668.md)-compliant format by an appropriate HTTP gateway where it can be retrieved by generic Ethereum contracts. This standard allows Ethereum to utilise a broader range of cross-chain blockspaces.
+ 
+ ## Motivation
+ 
+-Cross-Chain Storage Router Protocol (CCIP-Store) introduced in [EIP-7700](./eip-7700), describes three external routers for routing storage to L1 contracts, L2s and databases. This document extends that specification by introducing a fourth storage router targeting Solana as the storage provider.
++Cross-Chain Storage Router Protocol (CCIP-Store) introduced in [EIP-7700](../07700.md), describes three external routers for routing storage to L1 contracts, L2s and databases. This document extends that specification by introducing a fourth storage router targeting Solana as the storage provider.
+ 
+ L2s and databases both have centralising catalysts in their stack. For L2s, this centralising agent is the shared security with Ethereum mainnet. In case of databases, the centralising agent is trivial; it is the physical server hosting the database. In light of this, a storage provider that relies on its own independent consensus mechanism is preferred. This specification instructs how the clients should treat storage calls made to the Solana router.
+ 
+@@ -121,7 +121,7 @@ Since EVM and SVM have differing architectures, it is important to define precis
+ 
+ Using this strategy, most - if not all - current use-cases of `StorageRoutedToSolana()` are accounted for.
+ 
+-Finally, in order to read the cross-chain data stored on Solana in an arbitrary Ethereum contract, it must be translated back into EVM tongue by an [EIP-3668](./eip-3668)-compliant HTTP gateway. The arguments for a generic call to the gateway URL must be specified in the `/`-delimited nested format as described in [EIP-7700](./eip-7700). The core of such a gateway must follow
++Finally, in order to read the cross-chain data stored on Solana in an arbitrary Ethereum contract, it must be translated back into EVM tongue by an [EIP-3668](../03668.md)-compliant HTTP gateway. The arguments for a generic call to the gateway URL must be specified in the `/`-delimited nested format as described in [EIP-7700](../07700.md). The core of such a gateway must follow
+ 
+ ```js
+ /* Pseudo-code of an ERC-3668-compliant HTTP gateway tunneling Solana content to Ethereum */
+diff --git a/content/07722.md b/content/07722.md
+index c5ab7665..2b3ad999 100644
+--- a/content/07722.md
++++ b/content/07722.md
+@@ -16,7 +16,7 @@ This ERC proposes a specification for an opaque token that enhances privacy by c
+ 
+ ## Motivation
+ 
+-Smart contract accounts serve as well-defined identities that can have reusable claims and attestations attached to them, making them highly useful for various applications. However, this strength also introduces a significant privacy challenge when these identities are used to hold tokens. Specifically, in the case of [ERC-20](./eip-20.html) compatible tokens, where balances are stored directly on-chain in plain text, the transparency of these balances can compromise the privacy of the account holder. This creates a dilemma: while the reuse of claims and attestations tied to a smart contract account can be advantageous, it also increases the risk of exposing sensitive financial information, particularly when these well-defined identities are associated with publicly visible token holdings.
++Smart contract accounts serve as well-defined identities that can have reusable claims and attestations attached to them, making them highly useful for various applications. However, this strength also introduces a significant privacy challenge when these identities are used to hold tokens. Specifically, in the case of [ERC-20](./00020.md) compatible tokens, where balances are stored directly on-chain in plain text, the transparency of these balances can compromise the privacy of the account holder. This creates a dilemma: while the reuse of claims and attestations tied to a smart contract account can be advantageous, it also increases the risk of exposing sensitive financial information, particularly when these well-defined identities are associated with publicly visible token holdings.
+ 
+ This proposal aims to conceal balances on-chain, allowing the use of smart contract accounts to hold tokens without compromising privacy or integrity.
+ 
+diff --git a/content/07758.md b/content/07758.md
+index eee651db..941f7e72 100644
+--- a/content/07758.md
++++ b/content/07758.md
+@@ -26,7 +26,7 @@ This enables the user to:
+ 
+ ## Motivation
+ 
+-There is an existing spec, [EIP-2612](./eip-2612), that also allows meta-transactions, and it is encouraged that a contract implements both for maximum compatibility. The two primary differences between this spec and EIP-2612 are that:
++There is an existing spec, [EIP-2612](./02612.md), that also allows meta-transactions, and it is encouraged that a contract implements both for maximum compatibility. The two primary differences between this spec and EIP-2612 are that:
+ 
+ - EIP-2612 uses sequential nonces, but this uses random 32-byte nonces, and that
+ - EIP-2612 relies on the ERC-20 `approve`/`transferFrom` ("ERC-20 allowance") pattern.
+@@ -40,7 +40,7 @@ This can be especially problematic if the gas prices are very high and transacti
+ 
+ The ERC-20 allowance mechanism is susceptible to the multiple withdrawal attack, and encourages antipatterns such as the use of the "infinite" allowance. The wide-prevalence of upgradeable contracts have made the conditions favorable for these attacks to happen in the wild.
+ 
+-The deficiencies of the ERC-20 allowance pattern brought about the development of alternative token standards such as the [ERC-777](./eip-777). However, they haven't been able to gain much adoption due to compatibility and potential security issues.
++The deficiencies of the ERC-20 allowance pattern brought about the development of alternative token standards such as the [ERC-777](./00777.md). However, they haven't been able to gain much adoption due to compatibility and potential security issues.
+ 
+ ## Specification
+ 
+diff --git a/content/07766.md b/content/07766.md
+index a8a6d801..43b94b7a 100644
+--- a/content/07766.md
++++ b/content/07766.md
+@@ -13,7 +13,7 @@ requires: 4337, 7562
+ 
+ ## Abstract
+ 
+-[ERC-4337](./eip-4337) defined a way to achieve Account Abstraction on Ethereum using an alternative `UserOperation` mempool.
++[ERC-4337](./04337.md) defined a way to achieve Account Abstraction on Ethereum using an alternative `UserOperation` mempool.
+ 
+ However, one big limitation remains:
+ each transaction must carry its own `signature` or other form of validation input in order to be included.
+diff --git a/content/07769.md b/content/07769.md
+index 7efbf4c7..d17e97b4 100644
+--- a/content/07769.md
++++ b/content/07769.md
+@@ -13,7 +13,7 @@ requires: 155, 4337, 7562
+ 
+ ## Abstract
+ 
+-Defines new JSON-RPC API methods which enable [ERC-4337](./eip-4337) wallets to communicate with `UserOpeation` mempool
++Defines new JSON-RPC API methods which enable [ERC-4337](./04337.md) wallets to communicate with `UserOpeation` mempool
+ nodes and bundlers, matching the functionality that exists for Ethereum transactions.
+ 
+ Additionally, a set of `debug` JSON-RPC API methods is defined in order to facilitate development, testing and
+@@ -73,7 +73,7 @@ If the validation, simulation, or UserOperation pool inclusion fails,
+   * **code: -32501** - transaction rejected by `paymaster` contract's `validatePaymasterUserOp` function
+     * The `message` field SHOULD be set to the revert message from the `paymaster` contract
+     * The `data` field MUST contain a `paymaster` value
+-  * **code: -32502** - transaction rejected because of [ERC-7562](./eip-7562) opcode validation rule violation
++  * **code: -32502** - transaction rejected because of [ERC-7562](./07562.md) opcode validation rule violation
+   * **code: -32503** - UserOperation out of time-range:\
+     either wallet or paymaster returned a time-range, and it has already expired or will expire soon.
+     * The `data` field SHOULD contain the `validUntil` and `validAfter` values
+@@ -161,7 +161,7 @@ Response:
+ 
+ ##### Support for [EIP-7702](./07702.md) authorizations
+ 
+-On networks with [EIP-7702](./eip-7702) activated, the `UserOperation` object may also contain an `eip7702Auth` tuple.
++On networks with [EIP-7702](./07702.md) activated, the `UserOperation` object may also contain an `eip7702Auth` tuple.
+ Notice that according to EIP-7702 an `eip7702Auth` tuple must be provided only to perform a **change** of the authorization address.
+ Once the necessary `eip7702Auth` tuple was stored on-chain,
+ users are not required to provide the same `eip7702Auth` tuple for any consequent
+diff --git a/content/07780.md b/content/07780.md
+index 3c464bcb..741403c1 100644
+--- a/content/07780.md
++++ b/content/07780.md
+@@ -13,7 +13,7 @@ requires: 7579
+ 
+ ## Abstract
+ 
+-This proposal introduces three new module types on top of the existing modules described in [ERC-7579](./eip-7579). The modules are policy, signer and stateless validator. None of these modules are required to be implemented by accounts, but accounts can choose to implement them or other modules can choose to make use of them for additional composability.
++This proposal introduces three new module types on top of the existing modules described in [ERC-7579](./07579.md). The modules are policy, signer and stateless validator. None of these modules are required to be implemented by accounts, but accounts can choose to implement them or other modules can choose to make use of them for additional composability.
+ 
+ Policy modules can be used to check what a `UserOperation` or action is trying to achieve and determine if this is allowed. Signer modules can be used to validate signatures on provided hashes. Stateless validators are modules that are used to both validate signatures and compare them to a calldata-provided data blob which could, for example, include owners to check signatures against.
+ 
+diff --git a/content/07821.md b/content/07821.md
+index 7226376d..ed3a25c0 100644
+--- a/content/07821.md
++++ b/content/07821.md
+@@ -17,11 +17,11 @@ This proposal defines a minimal batch executor interface for delegations. A dele
+ 
+ ## Motivation
+ 
+-With the advent of [EIP-7702](./eip-7702), it is possible for Externally Owned Accounts (EOAs) to perform atomic batched executions.
++With the advent of [EIP-7702](./07702.md), it is possible for Externally Owned Accounts (EOAs) to perform atomic batched executions.
+ 
+ We anticipate that there will be multiple EIP-7702 delegations from multiple major vendors. A standard for the execution interface will enable better interoperability. EIP-7702 delegation is a risky procedure which should be done sparingly — it should not be performed upon each time a user switches websites. Also, EIP-7702 delegations are transactions that cost gas, making frequent delegation switching uneconomical. A standardized execution interface will reduce the need to switch delegations.
+ 
+-This standard complements the `wallet_sendCalls` API in [EIP-5792](./eip-5792). It enables the detection of atomic batch execution capabilities on EOAs and the preparation of the calldata for atomic batch executions on EOAs.
++This standard complements the `wallet_sendCalls` API in [EIP-5792](./05792.md). It enables the detection of atomic batch execution capabilities on EOAs and the preparation of the calldata for atomic batch executions on EOAs.
+ 
+ Using atomic batched executions reduces total latency and total tranaction costs, making it preferable over sequential transaction sending for EOAs.
+ 
+diff --git a/content/07856.md b/content/07856.md
+index cc12fa6b..41ba807e 100644
+--- a/content/07856.md
++++ b/content/07856.md
+@@ -31,7 +31,7 @@ cspr://<recipient>/<amount>/<token-address>?on-success=<success-callback-url>&on
+ - `cspr://` - [REQUIRED] Short for "Chain-Specific Payment Request". Indicates a blockchain-based payment request.
+ - `<recipient>` - [REQUIRED] The blockchain account requesting the payment (represented as a CAIP-10 account identifier).
+ - `<amount>` - [REQUIRED] The amount of tokens to be sent, specified as an integer or decimal number.
+-- `<token-address>` - [REQUIRED] The contract address of the [ERC-20](./eip-20) token to send (represented as a base64 encoded string). The special value `native` can be used to request the native currency of the specified chain (if the chain supports a native currency).
++- `<token-address>` - [REQUIRED] The contract address of the [ERC-20](./00020.md) token to send (represented as a base64 encoded string). The special value `native` can be used to request the native currency of the specified chain (if the chain supports a native currency).
+ - `<success-callback-url>` - [OPTIONAL] The URL to redirect the user to after the transaction is confirmed.
+ - `<error-callback-url>` - [OPTIONAL] The URL to redirect the user to after the transaction fails.
+ 
+@@ -80,9 +80,9 @@ The token address in this URI standard is represented as a base64 encoded string
+ 
+ ### Related Work
+ 
+-[ERC-681](./eip-681) is a related standard that defines a similar URI scheme for specifying token transfers in Ethereum. However, ERC-681 includes additional parameters for specifying transaction details, which were deemed unnecessary for the scope of this standard. The focus of this EIP is on simplicity and clarity in payment request specifications, with the expectation that transaction details will be handled by the user's wallet application.
++[ERC-681](./00681.md) is a related standard that defines a similar URI scheme for specifying token transfers in Ethereum. However, ERC-681 includes additional parameters for specifying transaction details, which were deemed unnecessary for the scope of this standard. The focus of this EIP is on simplicity and clarity in payment request specifications, with the expectation that transaction details will be handled by the user's wallet application.
+ 
+-[ERC-831](./eip-831) is another related standard that specifies a URI format for Ethereum. Instead of focusing exclusively on Ethereum and its rollups, this EIP is designed to be compatible with all blockchains. The primary distinction lies in the selection of the URI identifier.
++[ERC-831](./00831.md) is another related standard that specifies a URI format for Ethereum. Instead of focusing exclusively on Ethereum and its rollups, this EIP is designed to be compatible with all blockchains. The primary distinction lies in the selection of the URI identifier.
+ 
+ ## Backwards Compatibility
+ 
+diff --git a/content/07884/index.md b/content/07884/index.md
+index 7c23c733..0b1bad17 100644
+--- a/content/07884/index.md
++++ b/content/07884/index.md
+@@ -112,7 +112,7 @@ It is important to notice that the `getOperationHandler` relies on the given arg
+ 
+ #### Database flow
+ 
+-The HTTP request made to the gateway follows the same standard proposed by the [EIP-3668](./eip-3668) where the URL receives `/{sender}/{data}.json` enabling an API to behave just like an smart contract would. However, the [EIP-712 Typed Signature](../00712.md) was introduced to enable authentication.
++The HTTP request made to the gateway follows the same standard proposed by the [EIP-3668](../03668.md) where the URL receives `/{sender}/{data}.json` enabling an API to behave just like an smart contract would. However, the [EIP-712 Typed Signature](../00712.md) was introduced to enable authentication.
+ 
+ ![](./assets/d2.svg)
+ 
+@@ -203,7 +203,7 @@ The client implementation would look as follows:
+ 
+ ## Rationale
+ 
+-The standard aims to enable offchain writing operations, designed to be a complement for the CCIP-Read ([ERC-3668](./eip-3668)) which is already widely adopted by the community.
++The standard aims to enable offchain writing operations, designed to be a complement for the CCIP-Read ([ERC-3668](../03668.md)) which is already widely adopted by the community.
+ 
+ ## Backwards Compatibility
+ 
+diff --git a/content/07887.md b/content/07887.md
+index a5ac5345..5917be18 100644
+--- a/content/07887.md
++++ b/content/07887.md
+@@ -369,7 +369,7 @@ The alternative would create possible states where a cancelation is pending and
+ 
+ ### Mandated Support for [ERC-165](./00165.md)
+ 
+-Implementing support for [ERC-165](./00165.md) is mandated because of the optionality of flows as defined in [ERC-7540](./07540.md). Integrations can use the `supportsInterface` method to check whether a vault is fully asynchronous, partially asynchronous, or fully synchronous (for which it is just following the [ERC-4626](./eip-4626)), and use a single contract to support all cases.
++Implementing support for [ERC-165](./00165.md) is mandated because of the optionality of flows as defined in [ERC-7540](./07540.md). Integrations can use the `supportsInterface` method to check whether a vault is fully asynchronous, partially asynchronous, or fully synchronous (for which it is just following the [ERC-4626](./04626.md)), and use a single contract to support all cases.
+ 
+ ## Backwards Compatibility
+ 
+diff --git a/content/07891/index.md b/content/07891/index.md
+index 2361941d..413049ad 100644
+--- a/content/07891/index.md
++++ b/content/07891/index.md
+@@ -43,7 +43,7 @@ This EIP introduces hierarchical NFTs with splitting and merging capabilities, a
+ 
+ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 and RFC 8174.
+ 
+-Every compliant contract MUST implement this proposal, [EIP-721](./eip-721), [EIP-165](./eip-165), and [ERC-6150](./eip-6150)
++Every compliant contract MUST implement this proposal, [EIP-721](../00721.md), [EIP-165](../00165.md), and [ERC-6150](../06150.md)
+ 
+ ```solidity
+ pragma solidity ^0.8.0;
+@@ -105,7 +105,7 @@ interface IERC7891 /* is IERC6150, IERC721, IERC165 */ {
+ 
+ ## Rationale
+ 
+-This EIP builds upon [ERC-721](./eip-721) and [ERC-6150](./eip-6150) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within the token standard. The proposal reuses [ERC-6150](./eip-6150)'s parent-child architecture to preserve compatibility and reduce implementation complexity. Share management is embedded natively through internal mappings, allowing each token to track its fractional ownership independently without relying on external protocols. Functions like `mintSplit` and `mintMerge` are designed to reflect real-world asset behaviors, clearly distinguishing between asset decomposition and consolidation. The `sharePass` function facilitates redistribution of shares between tokens without requiring minting or burning, offering an efficient internal transfer mechanism. A `burn` function is included to allow share return to the parent on destruction, aligning with ownership. Overall, the interface is purposefully minimal and intuitive, designed for extensibility while maintaining gas efficiency and semantic clarity.
++This EIP builds upon [ERC-721](../00721.md) and [ERC-6150](../06150.md) to introduce a structured mechanism for share-based hierarchical NFTs, enabling splitting, merging, and fractional ownership directly within the token standard. The proposal reuses [ERC-6150](../06150.md)'s parent-child architecture to preserve compatibility and reduce implementation complexity. Share management is embedded natively through internal mappings, allowing each token to track its fractional ownership independently without relying on external protocols. Functions like `mintSplit` and `mintMerge` are designed to reflect real-world asset behaviors, clearly distinguishing between asset decomposition and consolidation. The `sharePass` function facilitates redistribution of shares between tokens without requiring minting or burning, offering an efficient internal transfer mechanism. A `burn` function is included to allow share return to the parent on destruction, aligning with ownership. Overall, the interface is purposefully minimal and intuitive, designed for extensibility while maintaining gas efficiency and semantic clarity.
+ 
+ ## Backwards Compatibility
+ 
+diff --git a/content/07902.md b/content/07902.md
+index f7301ca7..c7cca1aa 100644
+--- a/content/07902.md
++++ b/content/07902.md
+@@ -13,7 +13,7 @@ requires: 5792, 7702
+ 
+ ## Abstract
+ 
+-[EIP-5792](./eip-5792) defines a baseline JSON-RPC API for a communication between wallets and dapps,
++[EIP-5792](./05792.md) defines a baseline JSON-RPC API for a communication between wallets and dapps,
+ and provides an ability to extend the base protocol with "capabilities".
+ 
+ This proposal defines a set of "capabilities" the wallets may want to implement in order to provide a comprehensive
+@@ -22,7 +22,7 @@ support for Account Abstraction (AA).
+ These "capabilities" enable passing any data that may be required when using a Paymaster contract,
+ allows limiting the time range during which the UserOperation is considered valid,
+ provides a way for the dApp to manually control the semi-abstracted nonce and AA-specific gas limits of the UserOp,
+-and even allow the dApp to take part in selecting the [EIP-7702](./eip-7702) account implementation.
++and even allow the dApp to take part in selecting the [EIP-7702](./07702.md) account implementation.
+ 
+ ## Motivation
+ 
+@@ -32,7 +32,7 @@ they do not specify a way for advanced AA-aware dApps to communicate their suppo
+ 
+ This ERC addresses the issue by defining a structured set of capabilities tailored for AA-aware dApps and Wallet Applications.
+ 
+-It utilises the [EIP-5792](./eip-5792) wallet capability model to express some of the critical aspects of AA,
++It utilises the [EIP-5792](./05792.md) wallet capability model to express some of the critical aspects of AA,
+ ensuring dApps can seamlessly adapt to different AA Wallets without requiring custom solutions.
+ 
+ ## Specification
+@@ -40,11 +40,11 @@ ensuring dApps can seamlessly adapt to different AA Wallets without requiring cu
+ All actions in Account Abstraction within the context of EIP-5792 must be done on a single chain and atomically.
+ 
+ We define the following list of new "capabilities" which together cover many features necessary for Account Abstraction.
+-Note that use of Paymasters managed by a "paymaster web service" is described in [ERC-7677](./eip-7677).
++Note that use of Paymasters managed by a "paymaster web service" is described in [ERC-7677](./07677.md).
+ 
+-### Create [EIP-7702](./eip-7702) Authorization Capability
++### Create [EIP-7702](./07702.md) Authorization Capability
+ 
+-This capability is designed to be used with [EIP-7702](./eip-7702) and requests the Wallet Application to provide
++This capability is designed to be used with [EIP-7702](./07702.md) and requests the Wallet Application to provide
+ an EIP-7702 authorization tuple for the specified address as part of the AA transaction.
+ 
+ Identifier:
+@@ -184,7 +184,7 @@ Wallet Applications may choose to reject calls with conflicting configurations.
+ This is by far the most sensitive capability in the document.
+ There is no limit to the damage that can be done by signing the wrong capability.
+ 
+-Wallet Applications MUST take extreme care when working with [EIP-7702](./eip-7702).
++Wallet Applications MUST take extreme care when working with [EIP-7702](./07702.md).
+ 
+ Wallet Applications MUST maintain a strict shortlist of well-known and publicly audited Smart Contract Account
+ implementations that are acceptable as `delegation`.
+diff --git a/content/07988/index.md b/content/07988/index.md
+index bd525fba..b9f6ad86 100644
+--- a/content/07988/index.md
++++ b/content/07988/index.md
+@@ -13,7 +13,7 @@ requires: 7702
+ 
+ ## Abstract
+ 
+-Minimal Avatar Smart Wallet (MASW) is an immutable delegate‑wallet that any EOA can designate via [EIP‑7702](./eip-7702) (txType `0x04`). Once designated, the wallet's code remains active for every subsequent transaction until the owner sends a new `0x04` to clear or replace it. During each delegated call the EOA is the avatar and MASW's code executes as the delegate at the same address, enabling atomic batched calls ([EIP‑712](./eip-712) signed) and optional sponsor gas reimbursement in ETH or [ERC‑20](./eip-20).
++Minimal Avatar Smart Wallet (MASW) is an immutable delegate‑wallet that any EOA can designate via [EIP‑7702](../07702.md) (txType `0x04`). Once designated, the wallet's code remains active for every subsequent transaction until the owner sends a new `0x04` to clear or replace it. During each delegated call the EOA is the avatar and MASW's code executes as the delegate at the same address, enabling atomic batched calls ([EIP‑712](../00712.md) signed) and optional sponsor gas reimbursement in ETH or [ERC‑20](../00020.md).
+ 
+ The contract offers one primary function, `executeBatch`, plus two plug‑in hooks: a Policy Module for pre/post guards and a Recovery Module for alternate signature validation. Replay attacks are prevented by a global metaNonce, an expiry, and a chain‑bound `EIP‑712` domain separator. Standardising this seven‑parameter ABI removes wallet fragmentation while still allowing custom logic through modules.
+ 
+diff --git a/content/08000.md b/content/08000.md
+index f117a55c..3bb2517f 100644
+--- a/content/08000.md
++++ b/content/08000.md
+@@ -17,7 +17,7 @@ This standard defines a contract interface that enables externally owned account
+ 
+ ## Motivation
+ 
+-The [ERC-7702](./eip-7702) allows EOAs to become powerful smart contract accounts (SCA), which solves many UX issues, like the double `approve` + `transferFrom` transactions.  
++The [ERC-7702](./07702.md) allows EOAs to become powerful smart contract accounts (SCA), which solves many UX issues, like the double `approve` + `transferFrom` transactions.  
+ While this new technology is still reaching wider adoption over time, we need a way to improve UX for the users that decide to not have code attached to their EOAs.  
+ This proposal introduces a lightweight, backward-compatible mechanism to enhance UX for such users. By leveraging a standardized Operator contract, EOAs can batch multiple contract calls into a single transaction—assuming the target contracts are compatible (i.e., implement the Operated pattern).
+ 
+@@ -99,7 +99,7 @@ abstract contract Operated is Context {
+ 
+ Any contract can become compatible to execute the batch call by EOA using operator if it extends the `Operated` contract. The `Operated` contract overrides `_msgSender()` to return `operator.onBehalfOf()` when the call originates from the Operator. This ensures that the target contract recognizes the EOA initiating the batch execution, preserving correct sender context.
+ 
+-This behavior fits well with the usage of the \_msgSender() function from [ERC-2771](./eip-2771).
++This behavior fits well with the usage of the \_msgSender() function from [ERC-2771](./02771.md).
+ 
+ ### Methods
+ 
+@@ -173,7 +173,7 @@ contract Operator is IOperator, ReentrancyGuardTransient {
+ }
+ ```
+ 
+-Worth noting that the usage of transient storage ([EIP-1153](./eip-1153)) for storing the `msg.sender` is highly RECOMMENDED.
++Worth noting that the usage of transient storage ([EIP-1153](./01153.md)) for storing the `msg.sender` is highly RECOMMENDED.
+ 
+ ### Operated
+ 
+diff --git a/content/08042.md b/content/08042.md
+index 2adbc26f..511cf835 100644
+--- a/content/08042.md
++++ b/content/08042.md
+@@ -18,7 +18,7 @@ Though originally created for proxy contracts, diamond storage can be used to or
+ 
+ Diamond storage defines the location of structs in contract storage using the `keccak256` hash of human-readable identifiers.
+ 
+-[ERC-8042](./eip-8042) standardizes this simple and production-proven approach, offering a lightweight alternative to [ERC-7201](./07201.md) for new and existing projects.
++[ERC-8042](./08042.md) standardizes this simple and production-proven approach, offering a lightweight alternative to [ERC-7201](./07201.md) for new and existing projects.
+ 
+ 
+ ## Motivation
+@@ -220,4 +220,4 @@ Solidity mappings, dynamic arrays, strings and bytes also use `keccak256` to det
+ 
+ ## Copyright
+ 
+-Copyright and related rights waived via [CC0](/LICENSE.md).
+\ No newline at end of file
++Copyright and related rights waived via [CC0](/LICENSE.md).
+diff --git a/content/05564/index.md b/content/05564/index.md
+index 4f707eb8..1c9fae34 100644
+--- a/content/05564/index.md
++++ b/content/05564/index.md
+@@ -264,7 +264,7 @@ There are potential denial of service (DoS) attack vectors that are not mitigate
+ We consider the incentives to carry out such an attack to be low because **no monetary benefit can be obtained**
+ However, to tackle potential spam, parsing providers may adopt their own anti-DoS attack methods. These may include ignoring the spamming users when serving announcements to users or, less harsh, de-prioritizing them when ordering the announcements. The indexed `caller` keyword may help parsing providers to effectively filter known spammers.
+ 
+-Furthermore, parsing providers have a few options to counter spam, such as introducing staking mechanisms or requiring senders to pay a `toll` before including their `Announcement`. Moreover, a Staking mechanism may allow users to stake an unslashable amount of ETH (similarly to [ERC-4337](./eip-4337)), to help mitigate potential spam through _sybil attacks_ and enable parsing providers filtering spam more effectively.
++Furthermore, parsing providers have a few options to counter spam, such as introducing staking mechanisms or requiring senders to pay a `toll` before including their `Announcement`. Moreover, a Staking mechanism may allow users to stake an unslashable amount of ETH (similarly to [ERC-4337](../04337.md)), to help mitigate potential spam through _sybil attacks_ and enable parsing providers filtering spam more effectively.
+ Introducing a `toll`, paid by sending users, would simply put a cost on each stealth address transaction, making spamming economically unattractive.
+ 
+ ### Recipients' transaction costs
+diff --git a/content/07700/index.md b/content/07700/index.md
+index 6cc12b77..424b880f 100644
+--- a/content/07700/index.md
++++ b/content/07700/index.md
+@@ -12,12 +12,12 @@ requires: 155
+ ---
+ 
+ ## Abstract
+-The following standard provides a mechanism by which smart contracts can route storage to external providers. In particular, protocols can reduce the gas fees associated with storing data on mainnet by routing the handling of storage operations to another system or network. These storage routers act as an extension to the core L1 contract. Methods in this document specifically target security and cost-effectiveness of storage routing to three router types: L1, L2 and databases. The cross-chain data written with these methods can be retrieved by generic [EIP-3668](./eip-3668)-compliant contracts, thus completing the cross-chain data life cycle. This document, nicknamed CCIP-Store, alongside [EIP-3668](./eip-3668), is a meaningful step toward a secure infrastructure for cross-chain storage routers and data retrievals.
++The following standard provides a mechanism by which smart contracts can route storage to external providers. In particular, protocols can reduce the gas fees associated with storing data on mainnet by routing the handling of storage operations to another system or network. These storage routers act as an extension to the core L1 contract. Methods in this document specifically target security and cost-effectiveness of storage routing to three router types: L1, L2 and databases. The cross-chain data written with these methods can be retrieved by generic [EIP-3668](../03668.md)-compliant contracts, thus completing the cross-chain data life cycle. This document, nicknamed CCIP-Store, alongside [EIP-3668](../03668.md), is a meaningful step toward a secure infrastructure for cross-chain storage routers and data retrievals.
+ 
+ ## Motivation
+-[EIP-3668](./eip-3668), aka 'CCIP-Read', has been key to retrieving cross-chain data for a variety of contracts on Ethereum blockchain, ranging from price feeds for DeFi contracts, to more recently records for ENS users. The latter case dedicatedly uses cross-chain storage to bypass the usually high gas fees associated with on-chain storage; this aspect has a plethora of use cases well beyond ENS records and a potential for significant impact on universal affordability and accessibility of Ethereum.
++[EIP-3668](../03668.md), aka 'CCIP-Read', has been key to retrieving cross-chain data for a variety of contracts on Ethereum blockchain, ranging from price feeds for DeFi contracts, to more recently records for ENS users. The latter case dedicatedly uses cross-chain storage to bypass the usually high gas fees associated with on-chain storage; this aspect has a plethora of use cases well beyond ENS records and a potential for significant impact on universal affordability and accessibility of Ethereum.
+ 
+-Cross-chain data retrieval through [EIP-3668](./eip-3668) is a relatively simpler task since it assumes that all relevant data originating from cross-chain storages is translated by CCIP-Read-compliant HTTP gateways; this includes L2 chains and databases. On the flip side however, so far each service leveraging CCIP-Read must handle writing this data securely to these storage types on their own, while also incorporating reasonable security measures in their CCIP-Read-compatible contracts for verifying this data on L1. While these security measures are in-built into L2 architectures, database storage providers on the other hand must incorporate some form of explicit security measures during storage operations so that cross-chain data's integrity can be verified by CCIP-Read contracts during data retrieval stage. Examples of this include:
++Cross-chain data retrieval through [EIP-3668](../03668.md) is a relatively simpler task since it assumes that all relevant data originating from cross-chain storages is translated by CCIP-Read-compliant HTTP gateways; this includes L2 chains and databases. On the flip side however, so far each service leveraging CCIP-Read must handle writing this data securely to these storage types on their own, while also incorporating reasonable security measures in their CCIP-Read-compatible contracts for verifying this data on L1. While these security measures are in-built into L2 architectures, database storage providers on the other hand must incorporate some form of explicit security measures during storage operations so that cross-chain data's integrity can be verified by CCIP-Read contracts during data retrieval stage. Examples of this include:
+ 
+ - Services that allow the management of namespaces, e.g. ENS domains, stored externally on an L2 solution or off-chain database as if they were native L1 tokens, and,
+ - Services that allow the management of digital identities stored on external storages as if they were stored in the native L1 smart contract.
+@@ -284,7 +284,7 @@ Requesting Signature To Approve Data Signer\n\nOrigin: ${username}\nApproved Sig
+ where `dataSigner` must be checksummed.
+ 
+ #### 4. Post CCIP-Read Compatible Payload
+-The final [EIP-3668](./eip-3668)-compatible `data` payload in the off-chain data file is identified by a fixed `callback.signedData.selector` equal to `0x2b45eb2b` and must follow the format
++The final [EIP-3668](../03668.md)-compatible `data` payload in the off-chain data file is identified by a fixed `callback.signedData.selector` equal to `0x2b45eb2b` and must follow the format
+ 
+ ```solidity
+ /* Compile CCIP-Read-compatible payload*/
+@@ -504,4 +504,4 @@ None
+ 3. Clients must immediately purge the `password` and `spice` from local storage after usage in the `keygen()` function.
+ 
+ ## Copyright
+-Copyright and related rights waived via [CC0](/LICENSE.md).
+\ No newline at end of file
++Copyright and related rights waived via [CC0](/LICENSE.md).

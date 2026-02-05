@@ -705,3 +705,29 @@ index fe58e19c..b2c63685 100644
  const (
    RepricedGasBaseStep         uint64 = 1
    RepricedGasFastStep         uint64 = 2
+diff --git a/content/07833.md b/content/07833.md
+index 0d770146..bcc3e4f3 100644
+--- a/content/07833.md
++++ b/content/07833.md
+@@ -20,7 +20,7 @@ Adding bot-like behavior to an EVM function is achieved by recursively schedulin
+ 
+ Here is a solidity example of how the usage of OFFERCALL would look like:
+ 
+-```solidity=
++```solidity
+ contract Bot {
+     uint256 offerPerCall;
+     
+diff --git a/content/08032.md b/content/08032.md
+index 7a62e698..0e40fd3e 100644
+--- a/content/08032.md
++++ b/content/08032.md
+@@ -145,7 +145,7 @@ If `storage_count(A)` is absent at block start, clients MUST treat `S_pre(A) = 0
+ 
+ The gas cost of an `SSTORE` is computed as such:
+ 
+-```python=
++```python
+ constant_sstore_gas(addr, slot) + LIN_FACTOR * ceil_log16(S_pre(addr)) // ACTIVATION_THRESHOLD
+ ```
+ 

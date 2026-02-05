@@ -1,0 +1,507 @@
+diff --git a/content/03074/index.md b/content/03074/index.md
+index 9557b671..0bc1a009 100644
+--- a/content/03074/index.md
++++ b/content/03074/index.md
+@@ -146,7 +146,7 @@ A new opcode `AUTHCALL` shall be created at `0xf7`. It shall take seven stack el
+ 
+  - If `authorized` is unset, execution is invalid (as defined above). Otherwise, the caller address for the call is set to `authorized`.
+  - The gas cost, including how much gas is available for the subcall, is specified in the Gas Cost section.
+- - If the `gas` operand is equal to `0`, the instruction will send all available gas as per [EIP-150](./eip-150).
++ - If the `gas` operand is equal to `0`, the instruction will send all available gas as per [EIP-150](../00150.md).
+  - If the gas available for the subcall would be less than `gas`, execution is invalid.
+  - There is no gas stipend, even for non-zero `value`.
+  - `value` is deducted from the balance of `authorized`. If `value` is higher than the balance of `authorized`, execution is invalid.
+@@ -316,7 +316,7 @@ For this reason, `AUTH` requires the `nonce` in the message to be equal to the s
+ 
+ ### Failing on `EXTCODESIZE` check
+ 
+-In [EIP-3607](./eip-3607), it was determined that the protocol should reject any transaction which originates from an account with code. Although this EIP focused on transaction origination, the authors of EIP-3074 feel the intention is clear: an account that has both code and a known private key should not be allowed to make arbitrary calls on behalf of said account. Therefore, the property is upheld in this EIP. For full rationale, please refer to [EIP-3607](./eip-3607).
++In [EIP-3607](../03607.md), it was determined that the protocol should reject any transaction which originates from an account with code. Although this EIP focused on transaction origination, the authors of EIP-3074 feel the intention is clear: an account that has both code and a known private key should not be allowed to make arbitrary calls on behalf of said account. Therefore, the property is upheld in this EIP. For full rationale, please refer to [EIP-3607](../03607.md).
+ 
+ ## Backwards Compatibility
+ 
+diff --git a/content/03520.md b/content/03520.md
+index 241c01c3..01ef4f28 100644
+--- a/content/03520.md
++++ b/content/03520.md
+@@ -26,7 +26,7 @@ It is undeniable that smart contracts are becoming more interconnected than ever
+ 
+ The purpose of this EIP is to provide a way via which a contract is able to identify the entry-point of a transaction on the blockchain and deduce what was the original intention of the transaction by applying introspection on the original transaction data itself.
+ 
+-This EIP enables the development of new types of smart contracts as it can open new pathways for [EIP-721](./eip-721) NFTs and [EIP-20](./eip-20) tokens to detect which action their transaction is part of, such as detecting a liquidity provision to a decentralized exchange or a loan within a collateralized lending protocol.
++This EIP enables the development of new types of smart contracts as it can open new pathways for [EIP-721](./00721.md) NFTs and [EIP-20](./00020.md) tokens to detect which action their transaction is part of, such as detecting a liquidity provision to a decentralized exchange or a loan within a collateralized lending protocol.
+ 
+ ## Specification
+ 
+@@ -50,7 +50,7 @@ The `ENTRYPOINT` instruction came to be by defining a sensible name that immedia
+ 
+ ### Instruction Address Space
+ 
+-Equivalent to [EIP-3508](./eip-3508).
++Equivalent to [EIP-3508](./03508.md).
+ 
+ ### Gas Cost
+ 
+diff --git a/content/03534.md b/content/03534.md
+index 210e6f1e..c303da57 100644
+--- a/content/03534.md
++++ b/content/03534.md
+@@ -163,7 +163,7 @@ Practically, the "designated allowable chain segment" can be understood as the s
+ 
+ ##### Redundancy to `chainId`
+ 
+-This pattern can be understood as a correlate of [EIP-155](./eip-155)'s `chainId` specification.
++This pattern can be understood as a correlate of [EIP-155](./00155.md)'s `chainId` specification.
+ EIP155 defines the restriction of transactions between chains; limiting the applicability of any EIP-155 transaction to a chain with the annotated ChainID. 
+ `ancestorId` further restricts transaction application to one subsection ("segment") of one chain.
+ 
+diff --git a/content/03670.md b/content/03670.md
+index b8f1e2ad..561e536d 100644
+--- a/content/03670.md
++++ b/content/03670.md
+@@ -57,7 +57,7 @@ The deprecated instructions `CALLCODE` (0xf2) and `SELFDESTRUCT` (0xff) are remo
+ 
+ ### BLOCKHASH instruction
+ 
+-The `BLOCKHASH` instruction is well replaced by the system contract introduced in [EIP-2935](./eip-2935).
++The `BLOCKHASH` instruction is well replaced by the system contract introduced in [EIP-2935](./02935.md).
+ However, despite a replacement being introduced this opcode has not been deprecated.
+ This opcode will remain valid in EOF not to differentiate from legacy bytecode.
+ 
+diff --git a/content/03779.md b/content/03779.md
+index 3167304d..5f44a918 100644
+--- a/content/03779.md
++++ b/content/03779.md
+@@ -36,7 +36,7 @@ Validating contract safety requires traversing the contract code.  So in order t
+ 
+ #### Static Jumps and Subroutines
+ 
+-The relative jumps of [EIP-4200](./eip-4200) and the simple subroutines of [EIP-2315](./eip-2315) provide a complete set of static control flow instructions:
++The relative jumps of [EIP-4200](./04200.md) and the simple subroutines of [EIP-2315](./02315.md) provide a complete set of static control flow instructions:
+ > `RJUMP` _offset_
+ * Jumps to _IP+offset_. 
+ > `RJUMPI` _offset_
+diff --git a/content/05283.md b/content/05283.md
+index 218f5470..660feb86 100644
+--- a/content/05283.md
++++ b/content/05283.md
+@@ -29,7 +29,7 @@ Starting from an activation block (TBD) a new precompiled contract `Semaphore` i
+ 
+ ## Rationale
+ 
+-The address `0x0A` is the next one available within the range defined by [EIP-1352](./eip-1352).
++The address `0x0A` is the next one available within the range defined by [EIP-1352](./01352.md).
+ 
+ ### Sample usage
+ 
+diff --git a/content/05450.md b/content/05450.md
+index a08bd0a3..bc7d537d 100644
+--- a/content/05450.md
++++ b/content/05450.md
+@@ -163,7 +163,7 @@ It poses no risk to backwards compatibility, as it is introduced only for EOF1 c
+ 
+ ## Security Considerations
+ 
+-As mentioned above, the proposed validation algorithm has linear computational and space complexity and its cost is covered by the transaction data costs [EIP-2028](./eip-2028).
++As mentioned above, the proposed validation algorithm has linear computational and space complexity and its cost is covered by the transaction data costs [EIP-2028](./02028.md).
+ 
+ ## Copyright
+ 
+diff --git a/content/07557.md b/content/07557.md
+index 863fc2c5..2aeec213 100644
+--- a/content/07557.md
++++ b/content/07557.md
+@@ -17,7 +17,7 @@ among multiple transactions with shared items in their `accessList`.
+ 
+ ## Motivation
+ 
+-[EIP-2929: Gas cost increases for state access opcodes](./eip-2929) introduced a new gas cost model that differentiates
++[EIP-2929: Gas cost increases for state access opcodes](./02929.md) introduced a new gas cost model that differentiates
+ between "cold" and "warm" access to accounts and storage slots.
+ 
+ However, the cost of every cold access is borne by each transaction separately, even though the validator only
+@@ -27,11 +27,11 @@ When multiple transactions access the same state object in the same block the fe
+ do not accurately reflect the computations that block builders and validators perform for the blockchain state access
+ during transaction execution.
+ 
+-[EIP-2930: Optional access lists](./eip-2930) made it possible for transactions to pre-specify and pre-pay for the
++[EIP-2930: Optional access lists](./02930.md) made it possible for transactions to pre-specify and pre-pay for the
+ accounts and storage slots that the transaction plans to access,
+ however, the cost is still paid repeatedly by each transaction rather than once at the block level.
+ 
+-With the [EIP-6800: Ethereum state using a unified verkle tree](./eip-6800) on the roadmap for inclusion,
++With the [EIP-6800: Ethereum state using a unified verkle tree](./06800.md) on the roadmap for inclusion,
+ the cost of reading from the Ethereum state and especially the contract code is expected to increase.
+ 
+ Especially affected by this upcoming change will be transactions that involve smart contracts with a high code size.
+@@ -56,12 +56,12 @@ This difference is especially noticeable when compared to an EOA, which gets its
+ In this scenario, the base gas fees would be taken from the senders and burned needlessly while block proposers
+ would be enjoying an unjustified excessive earning of priority gas fees.
+ 
+-A major distinction between this proposal and alternatives, such as [EIP-7863](./eip-7863), lies in performing a fair
++A major distinction between this proposal and alternatives, such as [EIP-7863](./07863.md), lies in performing a fair
+ distribution of gas savings between all participants - all transactions senders and the block builder.
+ 
+ ## Specification
+ 
+-The [EIP-2930: Optional access lists](./eip-2930) already introduced the first part of the solution.
++The [EIP-2930: Optional access lists](./02930.md) already introduced the first part of the solution.
+ Each transaction can specify an array of `accessed_addresses` and `accessed_storage_keys` to announce its intention to
+ read those values during the execution of the transaction.
+ 
+@@ -312,19 +312,19 @@ export function calculatePriorityFeeReimbursements (sortedAccesses: AccessDetail
+ ```
+ 
+ Note that two accumulating values, `reimbursementFromBurn` and `reimbursementFromCoinbase`,
+-are necessary in light of [EIP-1559: Fee market change for ETH 1.0 chain](./eip-1559) in order to differentiate
++are necessary in light of [EIP-1559: Fee market change for ETH 1.0 chain](./01559.md) in order to differentiate
+ between the Ether reimbursement that is originating from a reduced block gas burn,
+ and from the reduced block proposer priority fee per gas reward.
+ 
+ ### Future EIP-6800 gas reform support
+ 
+-Once [EIP-6800](./eip-6800) is active, the cost of accessing a contract code for a cold address is expected to change.
++Once [EIP-6800](./06800.md) is active, the cost of accessing a contract code for a cold address is expected to change.
+ 
+ Instead of being a constant value of `COLD_ACCOUNT_ACCESS_COST` (currently 2600 gas),
+ the total cost will be determined by the number of 31-byte "chunks" the code consists of.
+ Each "chunk" of code will have a cost of `CODE_CHUNK_ACCESS_COST` (currently 200 gas).
+ 
+-For a maximum contract size of `24576 bytes` defined by [EIP-170](./eip-170) the cost of accessing this contract
++For a maximum contract size of `24576 bytes` defined by [EIP-170](./00170.md) the cost of accessing this contract
+ surges from `2600` to `158600` gas.
+ 
+ This change will likely require the `accessList` parameter of transactions to be adjusted for transactions
+@@ -344,7 +344,7 @@ for (let i = 0; i < sortedAccessDetails.length; i++) {
+ 
+ ### Cost redistribution system operation
+ 
+-The [EIP-4895: Beacon chain push withdrawals as operations](eip-4895) sets a precedent by introducing a concept of a `system-level withdrawal operation`.
++The [EIP-4895: Beacon chain push withdrawals as operations](./04895.md) sets a precedent by introducing a concept of a `system-level withdrawal operation`.
+ 
+ We propose the introduction of yet another system-level operation called `cost redistribution`.
+ The `redistributions` in an execution payload are processed after any user-level transactions are applied.
+@@ -367,7 +367,7 @@ However, the current system multiplies the cost for the users instead of dividin
+ ### Issuing a regular gas refund after a transaction is not possible
+ 
+ There exists a list of EVM instructions that trigger both a gas charge and a gas refund.
+-A notable example of such operations is the `0x55 SSTORE` opcode as defined in [EIP-1283: Net gas metering for SSTORE without dirty maps](./eip-1283).
++A notable example of such operations is the `0x55 SSTORE` opcode as defined in [EIP-1283: Net gas metering for SSTORE without dirty maps](./01283.md).
+ Intuitively it seems reasonable to issue the gas reimbursements for the shared cold storage access in the same fashion.
+ 
+ However, this approach significantly complicates the block-building process.
+diff --git a/content/07623.md b/content/07623.md
+index 13eed739..744c6c28 100644
+--- a/content/07623.md
++++ b/content/07623.md
+@@ -18,7 +18,7 @@ This is achieved by increasing calldata costs for transactions that predominantl
+ 
+ ## Motivation
+ 
+-The block gas limit has not been increased since [EIP-1559](./01559.md), while the average size of blocks has continuously increased due to the growing number of rollups posting data to Ethereum. Moreover, calldata costs have remained unchanged since [EIP-2028](./eip-2028).
++The block gas limit has not been increased since [EIP-1559](./01559.md), while the average size of blocks has continuously increased due to the growing number of rollups posting data to Ethereum. Moreover, calldata costs have remained unchanged since [EIP-2028](./02028.md).
+ [EIP-4844](./04844.md) introduces blobs as a preferred method for data availability (DA).
+ This transition demands a reevaluation of calldata pricing, especially in order to address the disparity between average and maximum block sizes.
+ By introducing a floor cost dependent on the ratio of gas spent on EVM operations to calldata, this proposal aims to reduce the maximum block size to make room for additional blobs or potential block gas limit increases.
+diff --git a/content/07676.md b/content/07676.md
+index 6f2e57c5..f5cce535 100644
+--- a/content/07676.md
++++ b/content/07676.md
+@@ -53,7 +53,7 @@ The gas cost of `EXTBALANCE` will be costed according to the gas schedule for th
+ operation specified in [EIP-2929](./02929.md). This means if the account is not
+ in `accessed_addresses` then it is charged 2600 gas and added to `accessed_addresses`. If the
+ account is in `accessed_addresses` then 100 gas is charged. The `accessed_addresses` is shared with
+-all other operands described in [EIP-2929](./eip-2929).
++all other operands described in [EIP-2929](./02929.md).
+ 
+ Also, for the `EXTCALL`, `EXTDELEGATECALL`, and `EXTSTATICCALL` operations a new step is added just
+ before the memory expansion check: halt with exceptional failure if any of the high 96 bits of
+diff --git a/content/07701/index.md b/content/07701/index.md
+index b74fc6d9..a8f962ef 100644
+--- a/content/07701/index.md
++++ b/content/07701/index.md
+@@ -40,7 +40,7 @@ A more detailed motivation for this proposal can be found in the [README documen
+ 
+ ### New Transaction Type
+ 
+-A new [EIP-2718](./eip-2718) transaction with type `AA_TX_TYPE` is introduced.
++A new [EIP-2718](../02718.md) transaction with type `AA_TX_TYPE` is introduced.
+ Transactions of this type are referred to as "AA transactions".
+ 
+ Their payload should be interpreted as:
+@@ -125,7 +125,7 @@ In all top-level frames, the global variables have the following meaning:
+ The Sender address is pre-warmed as part of the `AA_BASE_GAS_COST`.
+ 
+ When a non-zero address that is not equal to the `Sender` address, is provided for a `Paymaster` or a `Deployer` contract,
+-an additional [EIP-2930](./eip-2930) `ACCESS_LIST_ADDRESS_COST` cost of **2400 gas** is charged and the address is added to `accessed_addresses`.
++an additional [EIP-2930](../02930.md) `ACCESS_LIST_ADDRESS_COST` cost of **2400 gas** is charged and the address is added to `accessed_addresses`.
+ 
+ ### AA transaction processing flow
+ 
+diff --git a/content/07756.md b/content/07756.md
+index 50d96ae6..29c285b5 100644
+--- a/content/07756.md
++++ b/content/07756.md
+@@ -204,7 +204,7 @@ except as outlined below
+ - The `immediate` member was added to support the large number of instructions that contain 
+   immediate operations. Without this change, users would need bytes of the contracts being executed 
+   to rationalize the traces.
+-- The `section` and `functionDepth` members were added to support [EIP-4750](./eip-4750) EOF 
++- The `section` and `functionDepth` members were added to support [EIP-4750](./04750.md) EOF 
+   Functions.
+ - Added clarification around where `pc` indexes when run in an EOF container.
+ - Added Hex-Number/Number interchangeability expectations. Clients MAY provide either types when
+diff --git a/content/07768.md b/content/07768.md
+index 324a3e58..e1f0a8c0 100644
+--- a/content/07768.md
++++ b/content/07768.md
+@@ -85,7 +85,7 @@ This approach may use more gas than other approaches where the consensus client
+ 
+ ### Alternatives considered
+ 
+-* Update [EIP-1559](./eip-1559) so that transactions with gasPrice = 0 are legal, but only if the commensurate amount of gas will be burnt by the block preparer in that same block.
++* Update [EIP-1559](./01559.md) so that transactions with gasPrice = 0 are legal, but only if the commensurate amount of gas will be burnt by the block preparer in that same block.
+ * Create a new transaction type that encapsulates another signed transaction.
+ * Create a new opcode to get the coinbase of the next block.
+ 
+diff --git a/content/07784.md b/content/07784.md
+index 76bc62ee..82e6df72 100644
+--- a/content/07784.md
++++ b/content/07784.md
+@@ -28,7 +28,7 @@ For developers relying on extensive code reuse, bytecode referencing protects ag
+ 
+ For decentralized application (dApp) developers, a code index can save gas costs by allowing them to reference existing codebase instead of redeploying them, optimizing resource usage. This can be useful for dApps that rely on extensive re-use of same codebase as own dependencies.
+ 
+-This also allows to build new core standards more conveniently, for example, [EIP-7702](./eip-7702) can use it as dependency, to allow users who want to set up one-time code on their EOAs by referring to `GETCONTRACT` instead of specifying potentially mutable address based functionality.
++This also allows to build new core standards more conveniently, for example, [EIP-7702](./07702.md) can use it as dependency, to allow users who want to set up one-time code on their EOAs by referring to `GETCONTRACT` instead of specifying potentially mutable address based functionality.
+ 
+ ## Specification
+ 
+@@ -77,7 +77,7 @@ function getContractAddress(bytes32 codehash) public view returns (address) {
+ 
+ **Storage contents of registered contracts**: The index only refers to the bytecode of the contract, not the storage contents. This means that the contract state is not indexed and may change over time.
+ 
+-**[EIP-7702](./eip-7702) delegation:** Temporary code delegation is disallowed to prevent case of registering a code hash that becomes unavailable. Standard explicitly disallows contracts with bytecode delegated via [EIP-7702](./eip-7702) from being indexed.
++**[EIP-7702](./07702.md) delegation:** Temporary code delegation is disallowed to prevent case of registering a code hash that becomes unavailable. Standard explicitly disallows contracts with bytecode delegated via [EIP-7702](./07702.md) from being indexed.
+ 
+ **SELFDESTRUCT**: Contracts that `selfdestruct` are not indexed, as they will not have a codehash in the state trie.
+ 
+diff --git a/content/07788.md b/content/07788.md
+index 3eb37e3f..c9abaee1 100644
+--- a/content/07788.md
++++ b/content/07788.md
+@@ -52,7 +52,7 @@ next_epoch_blob_count = max(min(MAX_TARGET_BLOB_COUNT, previous_epoch_blob_count
+ 
+ ### Engine API change
+ 
+-The Engine API is extended to provide the `mean_blob_cost` for the current epoch when the CL requests it from the EL. The CL requests this at the end of an epoch to set the target for the next epoch (depends on [EIP-7742](./eip-7742)).
++The Engine API is extended to provide the `mean_blob_cost` for the current epoch when the CL requests it from the EL. The CL requests this at the end of an epoch to set the target for the next epoch (depends on [EIP-7742](./07742.md)).
+ 
+ ## Rationale
+ 
+diff --git a/content/07808.md b/content/07808.md
+index 68cf37b7..7f1c2b92 100644
+--- a/content/07808.md
++++ b/content/07808.md
+@@ -20,7 +20,7 @@ For L2s to use new transactrion types, it is necessary to reserve a transaction-
+ 
+ ## Specification
+ 
+-The transaction-type (as specified in [EIP-2718](./eip-2718)) range from `0x40` to `0x7f` (inclusive of both) is reserved for use by the RIP process.
++The transaction-type (as specified in [EIP-2718](./02718.md)) range from `0x40` to `0x7f` (inclusive of both) is reserved for use by the RIP process.
+ 
+ ## Rationale
+ 
+diff --git a/content/07851.md b/content/07851.md
+index 95c685d6..b22bace0 100644
+--- a/content/07851.md
++++ b/content/07851.md
+@@ -13,13 +13,13 @@ requires: 7702
+ 
+ ## Abstract
+ 
+-This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./eip-7702) to deactivate or reactivate their private keys. This design does not require additional storage fields or account state changes. By leveraging delegated code, reactivation can be performed securely through mechanisms such as social recovery.
++This EIP introduces a precompiled contract that enables Externally Owned Accounts (EOAs) with delegated control to smart contracts via [EIP-7702](./07702.md) to deactivate or reactivate their private keys. This design does not require additional storage fields or account state changes. By leveraging delegated code, reactivation can be performed securely through mechanisms such as social recovery.
+ 
+ ## Motivation
+ 
+-[EIP-7702](./eip-7702) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account.
++[EIP-7702](./07702.md) enables EOAs to gain smart contract capabilities, but the private key of the EOA still retains full control over the account.
+ 
+-With this EIP, EOAs can fully migrate to smart contract wallets, while retaining private key recovery options with reactivation. The flexible deactivate and reactivate design also paves the way for native account abstraction. e.g., [EIP-7701](./eip-7701).
++With this EIP, EOAs can fully migrate to smart contract wallets, while retaining private key recovery options with reactivation. The flexible deactivate and reactivate design also paves the way for native account abstraction. e.g., [EIP-7701](./07701.md).
+ 
+ ## Specification
+ 
+@@ -41,7 +41,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
+ The deactivation status is encoded by appending or removing the `0x00` byte at the end of the delegated code. The transitions between two states are as follows:
+ 
+ * Active state: `0xef0100 || address`. The private key is active and can sign transactions.
+-* Deactivated state: `0xef0100 || address || 0x00`. The private key is deactivated and cannot sign transactions or [EIP-7702](./eip-7702) delegation authorizations.
++* Deactivated state: `0xef0100 || address || 0x00`. The private key is deactivated and cannot sign transactions or [EIP-7702](./07702.md) delegation authorizations.
+ 
+ ### Precompiled Contract
+ 
+@@ -50,7 +50,7 @@ A new precompiled contract is introduced at address `PRECOMPILE_ADDRESS`. It cos
+ * Returns a precompile contract error, consumes all gas, and no state changes are made if:
+   * Gas is insufficient.
+   * Called via `STATICCALL` (i.e., in a read-only context).
+-  * Caller is not an EOA with delegated code (prefix `0xef0100` as per [EIP-7702](./eip-7702)).
++  * Caller is not an EOA with delegated code (prefix `0xef0100` as per [EIP-7702](./07702.md)).
+ * Updates caller's delegated code based on length:
+   * `23` bytes (`0xef0100 || address`): Appends `0x00` to deactivate private key authorization.
+   * `24` bytes (`0xef0100 || address || 0x00`): Removes last byte `0x00` to activate private key authorization.
+@@ -62,7 +62,7 @@ Validation to check whether a private key is deactivated (identified by a code p
+ 
+ * During transaction validity checks before execution, nodes MUST reject transactions signed with deactivated private keys to ensure such transactions cannot be included in blocks.
+ * The same validation MUST be applied to the transaction pool when receiving new transactions to prevent invalid transactions from propagating through the network.
+-* Any [EIP-7702](./eip-7702) authorization issued by an authority with a deactivated private key MUST be treated as invalid and skipped.
++* Any [EIP-7702](./07702.md) authorization issued by an authority with a deactivated private key MUST be treated as invalid and skipped.
+ 
+ ## Rationale
+ 
+@@ -78,7 +78,7 @@ The primary operation consumes a total of `12400` gas. To account for additional
+ 
+ ### Additional Transaction Validation Overhead
+ 
+-Due to [EIP-3607](./eip-3607) and [EIP-7702](./eip-7702), nodes already load the account code during transaction validation to verify whether the sender is an EOA (empty code or code with prefix `0xef0100`). This EIP introduces only a code length check after loading the code, resulting in minimal additional overhead. Similarly, [EIP-7702](./eip-7702)’s authorization validation already involves retrieving the account code, with this EIP adding only a code length check, which is negligible compared to code reading.
++Due to [EIP-3607](./03607.md) and [EIP-7702](./07702.md), nodes already load the account code during transaction validation to verify whether the sender is an EOA (empty code or code with prefix `0xef0100`). This EIP introduces only a code length check after loading the code, resulting in minimal additional overhead. Similarly, [EIP-7702](./07702.md)’s authorization validation already involves retrieving the account code, with this EIP adding only a code length check, which is negligible compared to code reading.
+ 
+ Transaction pools already perform state-based checks, such as those for nonce and balance. This EIP adds an account code read and a length check, which together are comparable to nonce and balance validations. DoS prevention mechanisms, expected in transaction pools, also support these additional checks.
+ 
+@@ -95,13 +95,13 @@ Alternative methods for deactivating and reactivating EOA private keys include:
+ 
+ ### In-Protocol Reactivation
+ 
+-This approach ensures maximum compatibility with future migrations. EOAs can reactivate their private keys, delegate their accounts to an [EIP-7701](./eip-7701) contract, and then deactivate their private keys again. This avoids the limitations of contract upgrades. e.g., to remove legacy proxy contracts (reducing gas overhead) when upgrading to EOF contracts, one can reactivate the EOA and redelegate it to an EOF proxy contract.
++This approach ensures maximum compatibility with future migrations. EOAs can reactivate their private keys, delegate their accounts to an [EIP-7701](./07701.md) contract, and then deactivate their private keys again. This avoids the limitations of contract upgrades. e.g., to remove legacy proxy contracts (reducing gas overhead) when upgrading to EOF contracts, one can reactivate the EOA and redelegate it to an EOF proxy contract.
+ 
+ Reactivation can only be performed by the delegated contract. Since reactivating the private key grants full control over the wallet, wallets must implement this interface with strict security measures. These measures should treat reactivation as the highest level of authority, equivalent to full wallet ownership. Users should delegate their EOAs only to wallets that have been thoroughly audited and follow best practices for security.
+ 
+ ### Avoiding Delegated Code Prefix Modification
+ 
+-This EIP appends a byte (`0x00`) to the delegated code instead of modifying the prefix (`0xef0100`) of [EIP-7702](./eip-7702) to ensure forward compatibility. If new prefixes such as `0xef0101` are introduced in the future, changing the prefix to represent the deactivated status (e.g., `0xef01ff`) makes it unclear which prefix to restore (`0xef0100` or `0xef0101`) upon reactivation.
++This EIP appends a byte (`0x00`) to the delegated code instead of modifying the prefix (`0xef0100`) of [EIP-7702](./07702.md) to ensure forward compatibility. If new prefixes such as `0xef0101` are introduced in the future, changing the prefix to represent the deactivated status (e.g., `0xef01ff`) makes it unclear which prefix to restore (`0xef0100` or `0xef0101`) upon reactivation.
+ 
+ ### Avoiding Account State Changes
+ 
+@@ -220,7 +220,7 @@ class StateDB:
+ 
+ ### Contracts Using ECDSA `Secp256k1` Signatures
+ 
+-Contracts that have already been deployed and use ECDSA `secp256k1` signatures outside of transaction signatures (e.g., [ERC-20](./eip-20) tokens that support [ERC-2612](./eip-2612), the `permit` function) will not be able to verify the deactivated status of the EOA. This means that signatures signed by private keys will remain valid in these functions.
++Contracts that have already been deployed and use ECDSA `secp256k1` signatures outside of transaction signatures (e.g., [ERC-20](./00020.md) tokens that support [ERC-2612](./02612.md), the `permit` function) will not be able to verify the deactivated status of the EOA. This means that signatures signed by private keys will remain valid in these functions.
+ 
+ To handle deactivated EOAs, new or upgradeable contracts can check the signing address's deactivation status, for example:
+ 
+@@ -238,7 +238,7 @@ Delegating to a wallet that lacks reactivation support (e.g., by calling the pre
+ 
+ Replay attacks can occur in two scenarios: (i) repeating the same authorization on a single chain, or (ii) using the authorization across different chains.
+ 
+-For deactivation through EOA-signed transactions, the use of nonces in transactions ensures the same message cannot be replayed multiple times on the same chain. Additionally, the replay protection mechanism provided by [EIP-155](./eip-155), if enabled, effectively prevents cross-chain message replay.
++For deactivation through EOA-signed transactions, the use of nonces in transactions ensures the same message cannot be replayed multiple times on the same chain. Additionally, the replay protection mechanism provided by [EIP-155](./00155.md), if enabled, effectively prevents cross-chain message replay.
+ 
+ For deactivation or reactivation via delegated contracts, the contract should implement robust replay protection mechanism(s) (e.g., adding a customized nonce and the chain ID to the signed message) to safeguard against replay attacks both within the same chain and across different chains. Especially when the EOA has been (or will be) delegated to the same implementation on multiple chains.
+ 
+diff --git a/content/07873.md b/content/07873.md
+index 7ea2fbc0..39c3de9c 100644
+--- a/content/07873.md
++++ b/content/07873.md
+@@ -177,7 +177,7 @@ One possible way of handling potential EOF containers in these transactions is t
+ 
+ One impact that would be seen by this would be block builders, as they would need to ensure that the transactions that are invalid are not included in a block. There is precedent for this, as [EIP-7623](./07623.md) established a new floor for the gas limit in transactions, prior to its adoption the limit was lower.  However, block builders have an existing check on gas limits and transactions and that change was adjusting the formula and constants.
+ 
+-We should also consider the treatment [EIP-7702](./eip-7702) delegation designations receive if they show up as code in a contract creation transaction.  The transaction is valid, is executed as plain bytecode, ad the first operation executed is `0xEF`, which is an invalid opcode and would cause the whole transaction to abort.
++We should also consider the treatment [EIP-7702](./07702.md) delegation designations receive if they show up as code in a contract creation transaction.  The transaction is valid, is executed as plain bytecode, ad the first operation executed is `0xEF`, which is an invalid opcode and would cause the whole transaction to abort.
+ 
+ Letting the inputdata of a type 0, 1, and 2 contract creation transaction execute as plain EVM code irrespective of the magic `0xEF00` bytes keeps a consistent behavior in client code and keeps block builders from having to update their logic in older transaction types.
+ 
+diff --git a/content/07886.md b/content/07886.md
+index 0bdddfd6..09240c8e 100644
+--- a/content/07886.md
++++ b/content/07886.md
+@@ -284,7 +284,7 @@ def process_transactions(
+ 
+ During block execution:
+ 
+-1. Clients MUST create a block-level snapshot before any transaction execution occurs. This happens after handling the system contracts from [EIP-4788](./eip-4788) and [EIP-2935](./eip-2935).
++1. Clients MUST create a block-level snapshot before any transaction execution occurs. This happens after handling the system contracts from [EIP-4788](./04788.md) and [EIP-2935](./02935.md).
+ 
+ 2. Maximum fees MUST be deducted from sender balances upfront by:
+ 
+diff --git a/content/07903.md b/content/07903.md
+index b24ace39..da68892b 100644
+--- a/content/07903.md
++++ b/content/07903.md
+@@ -13,7 +13,7 @@ requires: 170, 3860
+ 
+ ## Abstract
+ 
+-This EIP proposes the removal of the `initcode` size limit of 49152 bytes introduced in [EIP-3860](./eip-3860). The restriction complicates deploying multiple contracts addressing the [EIP-170](./eip-170) limit (24576 bytes) within a single transaction, while the existing gas metering for `initcode`, already ensures fair `initcode` costing, including for `JUMPDEST` analysis.
++This EIP proposes the removal of the `initcode` size limit of 49152 bytes introduced in [EIP-3860](./03860.md). The restriction complicates deploying multiple contracts addressing the [EIP-170](./00170.md) limit (24576 bytes) within a single transaction, while the existing gas metering for `initcode`, already ensures fair `initcode` costing, including for `JUMPDEST` analysis.
+ 
+ ## Motivation
+ 
+diff --git a/content/07917/index.md b/content/07917/index.md
+index 6635ab10..6ebc719a 100644
+--- a/content/07917/index.md
++++ b/content/07917/index.md
+@@ -18,7 +18,7 @@ At the start of each epoch, pre-calculate and store in the `beacon_state` a dete
+ 
+ Unlike RANDAO seeds, which have a deterministic lookahead of at least `MIN_SEED_LOOKAHEAD == 1` epochs, the beacon proposer schedule of epoch `N + 1` is not fully predictable from the beacon state during epoch `N`. The reason is that, under certain edge cases, the effective balances (EBs) of active validators—themselves used as input for proposer election in epoch `N + 1`—can change within epoch `N`.
+ 
+-Based preconfirmation protocols rely on a deterministic proposer schedule for smooth operations. Since the beacon genesis, slashings and penalties that accumulate to at least 1 ETH can change EBs of active validators and lead to an unpredictable proposer schedule despite the RANDAO seed being known ahead of time. The increase of MaxEB with [EIP-7251](./eip-7251) increases effective balance unpredictability because rewards that accumulate to at least 1 ETH, validator consolidations, and deposits can grow EBs of active validators beyond 32 ETH.
++Based preconfirmation protocols rely on a deterministic proposer schedule for smooth operations. Since the beacon genesis, slashings and penalties that accumulate to at least 1 ETH can change EBs of active validators and lead to an unpredictable proposer schedule despite the RANDAO seed being known ahead of time. The increase of MaxEB with [EIP-7251](../07251.md) increases effective balance unpredictability because rewards that accumulate to at least 1 ETH, validator consolidations, and deposits can grow EBs of active validators beyond 32 ETH.
+ 
+ Besides fixing next-epoch proposer schedule non-determinism, this EIP makes it possible for the proposer schedule of the next epoch to be accessible to the application layer via the beacon root and a simple Merkle proof. This highly simplifies the implementation of on-chain components for based preconfirmation protocols.
+ 
+diff --git a/content/07949.md b/content/07949.md
+index 565c51e4..9361f890 100644
+--- a/content/07949.md
++++ b/content/07949.md
+@@ -178,11 +178,11 @@ The `alloc` field defines the initial state at genesis. It maps addresses (as he
+ 
+ There are a growing number of EIPs that propose improvements to how a network is configured at genesis:
+ 
+-[Add Blob Schedule to EL Config File](eip-7840)
++[Add Blob Schedule to EL Config File](./07840.md)
+ 
+-[Blob Parameter Only Hardforks](eip-7892)
++[Blob Parameter Only Hardforks](./07892.md)
+ 
+-[eth_config JSON-RPC method](eip-7910)
++[eth_config JSON-RPC method](./07910.md)
+ 
+ However, the root configuration element amended by these remains unspecified. Adopting a minimal schema to define that will make subsequent changes more accurate and concise.
+ 
+diff --git a/content/07956.md b/content/07956.md
+index 953203ce..5209f52f 100644
+--- a/content/07956.md
++++ b/content/07956.md
+@@ -52,7 +52,7 @@ R = body.randao_reveal[0:32]     : bytes32
+ * **Definition** – A bundle is a user‑signed list of fully‑signed transactions.  Each `child_tx_rlp` is the canonical **signed** RLP encoding, including signature fields `(v, r, s)`.  The bundle begins with a *fee‑payment* transaction that covers gas and builder tip for the entire bundle.
+ * **Hashing / sort key** – Treat the bundle as a *virtual transaction* with key `H(concat(child_tx_rlps))`, where:
+ 
+-   * `child_tx_rlps[i]` **MUST** be the exact bytes that will later appear in the block body for that transaction, i.e. the *canonical RLP of the fully‑signed transaction* per [EIP‑2718](./eip-2718) / [EIP‑155](./eip-155) rules (for typed transactions the leading *type byte* and length prefix are included).
++   * `child_tx_rlps[i]` **MUST** be the exact bytes that will later appear in the block body for that transaction, i.e. the *canonical RLP of the fully‑signed transaction* per [EIP‑2718](./02718.md) / [EIP‑155](./00155.md) rules (for typed transactions the leading *type byte* and length prefix are included).
+    * Implementations **MUST NOT** strip or normalise the signature fields `(v,r,s)`; those 65 bytes are hashed as‑is so every participant derives an identical bundle key.
+    * The concatenation order is the author‑declared execution order of the child transactions.
+ * **Gas accounting** – Bundle gas is the **sum of the `gasLimit` fields** of all child transactions.  Builders use that sum when evaluating step 3.
+diff --git a/content/07979/index.md b/content/07979/index.md
+index 6cc807f7..67a1dce3 100644
+--- a/content/07979/index.md
++++ b/content/07979/index.md
+@@ -248,11 +248,11 @@ Some real-time interpreter performance gains will be had, as reflected in the lo
+ 
+ ### Why no immediate arguments?
+ 
+-This would of course break the promise of "the smallest possible change."  [EIP-8013: Static relative jumps and calls for the EVM](./eip-8013) is available if we want its size and performance advantages. It proposes five new EVM jump instructions (`RJUMP`, `RJUMPI`, `RJUMPV`, `RJUMPSUB`, and `RJUMPSUBV`) which encode destinations as signed immediate values. These can be useful for almost all `JUMP` and `JUMPI` use cases and offer improvements in cost, performance, and static analysis.
++This would of course break the promise of "the smallest possible change."  [EIP-8013: Static relative jumps and calls for the EVM](../08013.md) is available if we want its size and performance advantages. It proposes five new EVM jump instructions (`RJUMP`, `RJUMPI`, `RJUMPV`, `RJUMPSUB`, and `RJUMPSUBV`) which encode destinations as signed immediate values. These can be useful for almost all `JUMP` and `JUMPI` use cases and offer improvements in cost, performance, and static analysis.
+ 
+ ### Why no code sections?
+ 
+-Again, this would break the promise of "the smallest possible change," and [EIP-3540: EOF - EVM Object Format](./eip-3540) remains available. But note that restricting jumps to code sections impedes important optimizations, which EOF supported by adding special opcodes.  So if we want restricted code sections this becomes a much bigger change, and we should consider [EOF - Functions](./eip-4750) and related EIPs separately.  This proposal uses the same return-stack mechanism and poses no forwards compatability issues with EOF.
++Again, this would break the promise of "the smallest possible change," and [EIP-3540: EOF - EVM Object Format](../03540.md) remains available. But note that restricting jumps to code sections impedes important optimizations, which EOF supported by adding special opcodes.  So if we want restricted code sections this becomes a much bigger change, and we should consider [EOF - Functions](../04750.md) and related EIPs separately.  This proposal uses the same return-stack mechanism and poses no forwards compatability issues with EOF.
+ 
+ ### Why the return-stack mechanism?
+ 

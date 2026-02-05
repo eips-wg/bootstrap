@@ -715,127 +715,6 @@ index 8b8a3f4c..d58a21df 100644
  cd ../assets/eip-7738
  npm install --save-dev hardhat
  npm install
-diff --git a/content/07715/index.md b/content/07715/index.md
-index 7aa6ec32..959d92e4 100644
---- a/content/07715/index.md
-+++ b/content/07715/index.md
-@@ -41,7 +41,7 @@ We introduce a `wallet_grantPermissions` method for the DApp to request the Wall
- 
- #### Permission schema
- 
--```tsx
-+```typescript
- type PermissionRequest = {
-   chainId: Hex; // hex-encoding of uint256
-   address?: Address;
-@@ -71,7 +71,7 @@ type PermissionRequest = {
- 
- An array of `PermissionRequest` objects is the final `params` field expected by the `wallet_grantPermissions` RPC.
- 
--```tsx
-+```typescript
- [
-     {
-         chainId: 123,
-@@ -97,7 +97,7 @@ An array of `PermissionRequest` objects is the final `params` field expected by
- 
- #### Response Specification
- 
--```tsx
-+```typescript
- type PermissionResponse = PermissionRequest & {
-   context: Hex;
-   accountMeta?: {
-@@ -127,7 +127,7 @@ If the request is malformed or the wallet is unable/unwilling to grant permissio
- 
- An array of `PermissionResponse` objects is the final `result` field expected by the `wallet_grantPermissions` RPC.
- 
--```tsx
-+```typescript
- [
-     {
-         // original request with modifications
-@@ -160,7 +160,7 @@ Permissions can be revoked by calling this method and the wallet will respond wi
- 
- #### Request Specification
- 
--```tsx
-+```typescript
- type RevokePermissionsRequestParams = {
-   permissionContext: "0x{string}";
- };
-@@ -168,7 +168,7 @@ type RevokePermissionsRequestParams = {
- 
- #### Response Specification
- 
--```tsx
-+```typescript
- type RevokePermissionsResponseResult = {};
- ```
- 
-@@ -182,7 +182,7 @@ However, if two signers or two permissions share the same type name, a DApp coul
- 
- #### Signers
- 
--```tsx
-+```typescript
- // A wallet is the signer for these permissions
- // `data` is not necessary for this signer type as the wallet is both the signer and grantor of these permissions
- type WalletSigner = {
-@@ -226,7 +226,7 @@ type AccountSigner = {
- 
- #### Permissions
- 
--```tsx
-+```typescript
- // Native token transfer, e.g. ETH on Ethereum
- type NativeTokenTransferPermission = {
-   type: "native-token-transfer";
-@@ -294,7 +294,7 @@ type RateLimitPermission = {
- 
- If the signer is specified as `wallet`, then the wallet itself manages the session. If the wallet approves the request, it MUST accept [ERC-5792](../05792.md)’s `wallet_sendCalls` with the `permissions` capability, which MAY include the session with a `permissionsContext`. For example:
- 
--```tsx
-+```typescript
- [
-   {
-     version: "1.0",
-@@ -347,7 +347,7 @@ If the wallet is using CAIP-25 authorization, wallet SHOULD include `permissions
- 
- Example:
- 
--```json
-+```js
- {
-   //...
-   "sessionProperties": {
-@@ -368,7 +368,7 @@ Example:
- 
- Example of formatting userOp signature using the [ERC-7679](../07679.md) UserOp Builder
- 
--```jsx
-+```typescript
- const getSignature = async ({
-   address,
-   userOp,
-@@ -391,7 +391,7 @@ const getSignature = async ({
- 
- When requesting permissions with a `type` of `account`, the returned data will be redeemable using the interfaces specified in ERC-7710. This allows the recipient of the permissions to use any account type (EOA or contract) to form a transaction or UserOp using whatever payment or relay infrastructure they prefer, by sending an internal message to the returned `permissions.signerMeta.delegationManager` and calling its `function redeemDelegation(bytes calldata _data, Action calldata _action) external;` function with the `_data` parameter set to the returned `permissions.permissionsContext`, and the `_action` data forming the message that the permissions recipient desires the user's account to emit, as defined by this struct:
- 
--```
-+```solidity
- struct Action {
-     address to;
-     uint256 value;
-@@ -401,7 +401,7 @@ struct Action {
- 
- A simple pseudocode example of using a permission in this way, given two ethers signers in the same context, where `alice` wants to request a permission from `bob` might be like this:
- 
--```
-+```typescript
- // Alice requests a permission from Bob
- const permissionsResponse = await bob.request({
-   method: 'wallet_grantPermissions',
 diff --git a/content/07832.md b/content/07832.md
 index d19fdeaa..8eb96e9b 100644
 --- a/content/07832.md
@@ -875,26 +754,6 @@ index ac57e485..3f9877cb 100644
  pip install bip32utils eth_account
  
  python stms.py
-diff --git a/content/07930.md b/content/07930.md
-index ae901f98..aee0c5c8 100644
---- a/content/07930.md
-+++ b/content/07930.md
-@@ -99,7 +99,7 @@ Recall that an _Interoperable Name_ is a human readable representation of an und
- Its format is `<address> @ <chain> # <checksum>` where the components match the following regular expressions:
- 
- #### Syntax
--```bnf
-+```abnf
- <address>             ::= [.-:_%a-zA-Z0-9]*
- <chain>               ::= [.-:_a-zA-Z0-9]*
- <checksum>            ::= [0-9A-F]{8}
-@@ -328,4 +328,4 @@ Copyright and related rights waived via [CC0](/LICENSE.md).
- [CAIP-10]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00010.md
- [CAIP-50]: https://github.com/ChainAgnostic/CAIPs/blob/2a7d42aebaffa42d1017c702974395ff5c1b3636/CAIPs/./00050.md
- [CAIP-350]: https://github.com/ChainAgnostic/CAIPs/blob/29762ef99a6ffea1e07e3f796c0d1a5a95e89b88/CAIPs/./00350.md
--[RFC 4648]: https://www.rfc-editor.org/rfc/rfc4648
-\ No newline at end of file
-+[RFC 4648]: https://www.rfc-editor.org/rfc/rfc4648
 diff --git a/content/07946.md b/content/07946.md
 index 32ddbe42..9419e465 100644
 --- a/content/07946.md
@@ -908,37 +767,6 @@ index 32ddbe42..9419e465 100644
  syntax = "proto3";
  
  package org.ethereum.uwulink;
-diff --git a/content/07893/assets/full-test-case.md b/content/07893/assets/full-test-case.md
-index 20086a5f..74a96464 100644
---- a/content/07893/assets/full-test-case.md
-+++ b/content/07893/assets/full-test-case.md
-@@ -87,7 +87,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
- ### Mathematical Model Application
- 
- 1. **Solvency Ratio (SR) Calculation**
--   ```math
-+   ```
-    SR = (TA / TL) × 100
-    ```
-    Applied in test case:
-@@ -97,7 +97,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
-    ```
- 
- 2. **Risk-Adjusted Health Factor**
--   ```math
-+   ```
-    HF = (∑(Ai × Pi × Wi)) / (∑(Li × Pi × Ri))
-    ```
-    Test implementation:
-@@ -106,7 +106,7 @@ Test coverage for the SolvencyProof smart contract system, focusing on market sc
-    - Risk Factor (Ri): 1.2
- 
- 3. **Volatility Calculation**
--   ```math
-+   ```
-    σ = √(∑(rt - μ)²/n)
-    ```
-    Where:
 diff --git a/content/02333.md b/content/02333.md
 index dca8375c..f0d6825d 100644
 --- a/content/02333.md
@@ -952,3 +780,270 @@ index dca8375c..f0d6825d 100644
  mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
  passphrase = "TREZOR"
  ```
+diff --git a/content/02612.md b/content/02612.md
+index 06cb8ba7..769eb1d0 100644
+--- a/content/02612.md
++++ b/content/02612.md
+@@ -40,7 +40,7 @@ While it may be tempting to introduce `*_by_signature` counterparts for every EI
+ 
+ Compliant contracts must implement 3 new functions in addition to EIP-20:
+ 
+-```sol
++```solidity
+ function permit(address owner, address spender, uint value, uint deadline, uint8 v, bytes32 r, bytes32 s) external
+ function nonces(address owner) external view returns (uint)
+ function DOMAIN_SEPARATOR() external view returns (bytes32)
+@@ -62,7 +62,7 @@ if and only if the following conditions are met:
+ 
+ If any of these conditions are not met, the `permit` call must revert.
+ 
+-```sol
++```solidity
+ keccak256(abi.encodePacked(
+    hex"1901",
+    DOMAIN_SEPARATOR,
+diff --git a/content/04521.md b/content/04521.md
+index ae4464e8..2de515e9 100644
+--- a/content/04521.md
++++ b/content/04521.md
+@@ -22,7 +22,7 @@ The key words “MUST”, “MUST NOT”, “REQUIRED”, “SHALL”, “SHALL
+ 
+ The interface for ERC-4521 `transfer()` MUST conform to ERC-20 and resulting transfers MUST fire the `Transfer` event as described in ERC-721.
+ 
+-```sol
++```solidity
+ function transfer(address to, uint256 tokenId) external returns (bool success);
+ ```
+ 
+@@ -35,7 +35,7 @@ This EIP does not introduce any known backward compatibility issues.
+ ## Reference Implementation
+ A reference implementation of an ERC-4521 `transfer()`:
+ 
+-```sol
++```solidity
+ function transfer(address to, uint256 tokenId) public virtual returns (bool success) {
+         require(msg.sender == ownerOf[tokenId], "NOT_OWNER");
+ 
+diff --git a/content/05189.md b/content/05189.md
+index d179515b..9d89a7fd 100644
+--- a/content/05189.md
++++ b/content/05189.md
+@@ -250,7 +250,7 @@ When an `endorser` is banned, the mempool operator MUST drop all `operations` re
+ 
+ In some scenarios, the `endorser` may not be able to fully validate the `operation` but may be able to infer that a given code path *should* be safe. In these cases, the endorser can mark a section of the operation as `untrusted`. Any storage slots (balance, code, nonce, or specific slots) accessed in this untrusted context should be automatically considered as dependencies.
+ 
+-```sol
++```solidity
+ interface Endorser {
+   event UntrustedStarted();
+   event UntrustedEnded();
+diff --git a/content/05805.md b/content/05805.md
+index 88075969..121c0966 100644
+--- a/content/05805.md
++++ b/content/05805.md
+@@ -180,7 +180,7 @@ A call to `delegateBySig(delegatee, nonce, expiry, v, r, s)` changes the signer'
+ 
+ If any of these conditions are not met, the `delegateBySig` call must revert. This translates to the following solidity code:
+ 
+-```sol
++```solidity
+ require(expiry <= block.timestamp)
+ bytes signer = ecrecover(
+   keccak256(abi.encodePacked(
+@@ -338,7 +338,7 @@ This MUST be emitted when:
+ 
+ ### Solidity interface
+ 
+-```sol
++```solidity
+ interface IERC5805 is IERC6372 /* (optional) */ {
+   event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate);
+   event DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance);
+diff --git a/content/07555.md b/content/07555.md
+index 11b0c7d7..3c01fabe 100644
+--- a/content/07555.md
++++ b/content/07555.md
+@@ -57,7 +57,7 @@ The `smart_account_address` should be returned in the CAIP-10 format.
+ 
+ #### Auth Route
+ ##### Request Schema
+-```= swagger
++```yaml
+  parameters:
+     - in: query
+       name: redirect_uri
+@@ -71,7 +71,7 @@ The `smart_account_address` should be returned in the CAIP-10 format.
+       description: The chain_id of a given network.
+ ```
+ ##### Response Schema
+-```= swagger
++```yaml
+  parameters:
+   - in: query
+       name: smart_account_address
+@@ -81,20 +81,20 @@ The `smart_account_address` should be returned in the CAIP-10 format.
+ ```
+ 
+ ##### Request Syntax
+-```= swagger
++```
+ https://<PROVIDER_URI>/auth/?
+     redirect_uri=<YOUR_REDIRECT_URI>
+     &chain_id=<CHAIN_ID>
+ ```
+ ##### Response Syntax
+-```= swagger
++```
+ https://<YOUR_REDIRECT_URI>/auth/?
+     smart_account_address=<SMART_ACCOUNT_ADDRESS>
+ ```
+ 
+ #### sendTransaction Route
+ ##### Request Schema
+-```= swagger
++```yaml
+  parameters:
+     - in: query
+       name: redirect_uri
+@@ -113,7 +113,7 @@ https://<YOUR_REDIRECT_URI>/auth/?
+       description: The RLP encoded transaction that needs to be signed
+ ```
+ ##### Response Schema
+-```= swagger
++```yaml
+  parameters:
+   - in: query
+       name: smart_account_address
+@@ -128,14 +128,14 @@ https://<YOUR_REDIRECT_URI>/auth/?
+ ```
+ 
+ ##### Request Syntax
+-```= swagger
++```
+ https://<PROVIDER_URI>/sendTransaction/?
+     redirect_uri=<YOUR_REDIRECT_URI>
+     &chain_id=<CHAIN_ID>
+     &transaction=<TRANSACTION_DATA>
+ ```
+ ##### Response Syntax
+-```= swagger
++```
+ https://<YOUR_REDIRECT_URI>/sendTransaction/?
+     smart_account_address=<SMART_ACCOUNT_ADDRESS>
+     &tx_hash=<TX_HASH>
+@@ -162,16 +162,16 @@ No backward compatibility issues found.
+ Using `location.replace()` vs `location.href` is up to the application to decide how they wish the experience to be handled.
+ 
+ Sample URI Request
+-```=
++```
+ https://eth-sso.ethereum.org/auth?redirect_uri=http://myapp.com/eth-sso/callback/&chain_id=1
+ ```
+ Sample Response
+-```=
++```
+ http://myapp.com/callback/?smart_account_address=0xb...c
+ ```
+ 
+ Application logic
+-```javascript=
++```javascript
+ // https://myapp.com
+ // User triggered authentication function
+ function auth() {
+@@ -186,7 +186,7 @@ route("/eth-sso/callback/", function() {
+ ```
+ 
+ Provider Logic
+-```javascript=
++```javascript
+ // eg: https://eth-sso.ethereum.org/auth
+ route("/eth-sso/callback/", function("/auth") {
+     let params = (new URL(document.location)).searchParams;
+@@ -208,4 +208,4 @@ The absence of wildcard support in the redirect URI is intended to protect users
+ 
+ ## Copyright
+ 
+-Copyright and related rights waived via [CC0](/LICENSE.md).
+\ No newline at end of file
++Copyright and related rights waived via [CC0](/LICENSE.md).
+diff --git a/content/07769.md b/content/07769.md
+index d17e97b4..ff405cf7 100644
+--- a/content/07769.md
++++ b/content/07769.md
+@@ -264,7 +264,7 @@ Return a `UserOperation` receipt object based on a `userOpHash` value returned b
+ Returns an array of the `EntryPoint` contracts' addresses supported by the client.
+ The first element of the array `SHOULD` be the `EntryPoint` contract addressed preferred by the client.
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -288,7 +288,7 @@ The first element of the array `SHOULD` be the `EntryPoint` contract addressed p
+ 
+ Returns [EIP-155](./00155.md) Chain ID.
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -343,7 +343,7 @@ Dumps the current `UserOperation` mempool
+ 
+ `array` - Array of `UserOperation` objects currently in the mempool.
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -407,7 +407,7 @@ After setting mode to "manual", an explicit call to `debug_bundler_sendBundleNow
+ 
+ `mode` - 'manual' | 'auto'
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -438,7 +438,7 @@ Sets the reputation of given addresses.
+ 
+ * **EntryPoint** the entrypoint used by `eth_sendUserOperation`
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -483,7 +483,7 @@ An array of reputation entries with the fields:
+ * `opsIncluded` - number of times user operation that use this entity was included on-chain
+ * `status` - (string) The status of the address in the bundler (`'ok'` | `'throttled'` | `'banned'`)
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+@@ -516,7 +516,7 @@ and accept them directly into the mempool.
+ 
+ * An array of `UserOperation` objects
+ 
+-```json=
++```json
+ # Request
+ {
+   "jsonrpc": "2.0",
+diff --git a/content/07828.md b/content/07828.md
+index bcdcad5f..e1be6239 100644
+--- a/content/07828.md
++++ b/content/07828.md
+@@ -64,7 +64,7 @@ This section builds upon the Terminology defined in [ERC-7930].
+ The format of an _Interoperable Name_ is `<address>@<chain>#<checksum>` where the components match the following regular expressions:
+ 
+ #### Syntax
+-```bnf
++```abnf
+ <interoperable-name>  ::= <address> "@" <chain> [ "#" <checksum> ]
+ <address>             ::= [.-:_%a-zA-Z0-9]*
+ <chain>               ::= [.-:_a-zA-Z0-9]*
